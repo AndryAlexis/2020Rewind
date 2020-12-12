@@ -162,6 +162,12 @@ const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
     return elemento;
 }
 
+const escogerPoderesAliado = (aliado, img) => {
+    aliado.classList.add(imagenes.aliados.map((imgAliado) => img.includes(Object.values(nombre.aliado).map(nombreAliado => nombreAliado))) ? imgAliado : "");
+    // Object.values(nombre.aliado).forEach(nombreAliado => console.log(nombreAliado));
+    console.log(aliado.className);
+}
+
 const crearElementos = (cantidad, tipo, ancho, alto, img, tipoEtiqueta) => {
     const elementos = new Array(cantidad);
     const body = document.querySelector(label.body);
@@ -173,19 +179,25 @@ const crearElementos = (cantidad, tipo, ancho, alto, img, tipoEtiqueta) => {
         if (img.length > 1) {
             posImg = posImg < img.length - 1 ? posImg + 1 : 0;
         }
+
+        switch (tipo) {
+            case clase.aliado:
+                escogerPoderesAliado(elementos[i], img[posImg]);
+                break;
+        }
     }
     return elementos;
 }
 
-const comprobarLimiteItem = (item, yPos) => {
+const comprobarLimiteItem = (item, yPos, altoItem) => {
     if (yPos >= tamano.ventana.alto) {
         item.classList.add(clase.esconder);
+        item.style.top = negativeValue(altoItem) + px;
         item.style.opacity = '1';
-        item.style.top = negativeValue(tamano.enemigo.alto) + px;
     }
 }
 
-const colisionConNave = (yColisionador, xColisionador, nave) => {
+const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
     const yPosNave = parseFloat(nave.style.top.split(px)[0]);
     const xPosNave = parseFloat(nave.style.left.split(px)[0]);
 
@@ -211,10 +223,10 @@ const colisionConNave = (yColisionador, xColisionador, nave) => {
     const boundsColisionador = {
         x : {
             min : xColisionador,
-            max : xColisionador + tamano.enemigo.ancho
+            max : xColisionador + anchoColisionador
         },
         y : {
-            min : yColisionador + tamano.enemigo.alto,
+            min : yColisionador + altoColisionador,
             max : yColisionador
         }
     }
@@ -248,19 +260,19 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
 
             enemigo.style.top = yPos + speed.enemies + px;
 
-            comprobarLimiteItem(enemigo, yPos);
+            comprobarLimiteItem(enemigo, yPos, tamano.enemigo.alto);
             comprobarColisiones(enemigo, proyectiles, tamano.enemigo.alto, tamano.enemigo.ancho, tamano.proyectil.alto, tamano.proyectil.ancho);
 
             const opacidadActual = parseFloat(enemigo.style.opacity);
 
             if (opacidadActual <= 0.0) {
                 enemigo.classList.add(clase.esconder);
-                enemigo.style.opacity = '1';
                 enemigo.style.top = negativeValue(tamano.enemigo.alto) + px;
-            } else if (colisionConNave(yPos, xPos, nave)) {
+                enemigo.style.opacity = '1';
+            } else if (colisionConNave(yPos, xPos, nave, tamano.enemigo.ancho, tamano.enemigo.alto)) {
                 enemigo.classList.add(clase.esconder);
-                enemigo.style.opacity = '1';
                 enemigo.style.top = negativeValue(tamano.enemigo.alto) + px;
+                enemigo.style.opacity = '1';
 
                 const currentLife = vida.style.width.split(percentage)[0] - (oneHundred * damage.enemie);
                 vida.style.width = currentLife + percentage;
@@ -274,14 +286,20 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
     });
 }
 
-const moverAliado = (aliados) => {
+const moverAliado = (aliados, nave) => {
     let yPos = 0;
+    let xPos = 0;
     aliados.forEach(aliado => {
         if (!aliado.classList.contains(clase.esconder)) {
             yPos = parseInt(aliado.style.top.split(px)[0]);
+            xPos = parseFloat(aliado.style.left.split(px)[0]);
             aliado.style.top = yPos + speed.friends + px;
 
-            comprobarLimiteItem(aliado, yPos);
+            comprobarLimiteItem(aliado, yPos, tamano.aliado.alto);
+            if (colisionConNave(yPos, xPos, nave, tamano.aliado.ancho, tamano.aliado.alto)) {
+                aliado.classList.add(clase.esconder);
+                aliado.style.top = negativeValue(tamano.aliado.alto) + px;
+            }
         }
     });
 }
@@ -400,7 +418,7 @@ const main = (nave, vida) => {
     setInterval(_ => moverProyectiles(proyectiles, enemigos), time.movement.projectile);
     setInterval(_ => spawnItems(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => spawnItems(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => moverAliado(aliados), time.movement.friends);
+    setInterval(_ => moverAliado(aliados, nave), time.movement.friends);
     setInterval(_ => moverEnemigo(enemigos, proyectiles, nave, vida), time.movement.enemies);
 
     window.onresize = _ => {

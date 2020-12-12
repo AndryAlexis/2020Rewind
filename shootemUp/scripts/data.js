@@ -50,8 +50,8 @@ const time = {
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
-    friends : 10,
-    enemies : 100
+    friends : 100,
+    enemies : 0
 }
 
 const urlImages = 'url(./img/';
@@ -59,18 +59,32 @@ const urlEnemies = urlImages + 'items/enemies/';
 const urlFriends = urlImages + 'items/friends/';
 const png = '.png)';
 
+const nombre = {
+    enemigo : {
+        tierra : 'tierra',
+        dt : 'dt',
+        cv : 'cv'
+    },
+    aliado : {
+        gt : 'gt',
+        mascarilla : 'mascarilla',
+        poqvnw : 'poqvnw',
+        koala : 'koala'
+    }
+}
+
 const imagenes = {
     proyectiles : urlImages + 'disparoComunista' + png,
     enemigos : [
-        urlEnemies + 'tierra.tif' + png,
-        urlEnemies + 'CV.tif' + png,
-        urlEnemies + 'DT.tif' + png
+        urlEnemies + nombre.enemigo.tierra + png,
+        urlEnemies + nombre.enemigo.cv + png,
+        urlEnemies + nombre.enemigo.dt + png
     ],
     aliados : [
-        urlFriends + 'GT.tif' + png,
-        urlFriends + 'Mascarilla.tif' + png,
-        urlFriends + 'PoQvnw.tif' + png,
-        urlFriends + 'koala' + png
+        urlFriends + nombre.aliado.gt + png,
+        urlFriends + nombre.aliado.mascarilla + png,
+        urlFriends + nombre.aliado.poqvnw + png,
+        urlFriends + nombre.aliado.koala + png
     ]
 }
 
@@ -83,8 +97,20 @@ const clase = {
     nave : 'nave',
     aliado : 'aliado',
     vida : 'vida',
-    menu : 'menu'
+    menu : 'menu',
+    poderes : [
+        'cadencia',
+        'velocidadDisparo',
+        'vida',
+        'dano'
+        //DisparoDoble
+        //NaveAuxilar
+        //NaveMásPequeña
+    ]
 }
+
+const poderes = [1, 1, 1, 1];
+
 //Las medidas de tamano se miden en píxeles, excepto tamano.movil, esas se miden en porcentajes.
 const tamano = {
     nave : {
