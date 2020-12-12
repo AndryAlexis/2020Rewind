@@ -3,6 +3,7 @@ const orden = {
     enemigo : 0,
 }
 
+let eventShoot = null;
 const halfValue = (number) => number * 0.5;
 const negativeValue = (number) => number * -1;
 
@@ -162,11 +163,7 @@ const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
     return elemento;
 }
 
-const escogerPoderesAliado = (aliado, img) => {
-    aliado.classList.add(imagenes.aliados.map((imgAliado) => img.includes(Object.values(nombre.aliado).map(nombreAliado => nombreAliado))) ? imgAliado : "");
-    // Object.values(nombre.aliado).forEach(nombreAliado => console.log(nombreAliado));
-    console.log(aliado.className);
-}
+const escogerPoderesAliado = (urlImg) => Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "");
 
 const crearElementos = (cantidad, tipo, ancho, alto, img, tipoEtiqueta) => {
     const elementos = new Array(cantidad);
@@ -176,14 +173,15 @@ const crearElementos = (cantidad, tipo, ancho, alto, img, tipoEtiqueta) => {
     for (let i = 0; i < cantidad; i++) {
         elementos[i] = nuevoElemento(tipo, ancho, alto, img[posImg], tipoEtiqueta);
         body.appendChild(elementos[i]);
-        if (img.length > 1) {
-            posImg = posImg < img.length - 1 ? posImg + 1 : 0;
-        }
 
         switch (tipo) {
             case clase.aliado:
-                escogerPoderesAliado(elementos[i], img[posImg]);
+                elementos[i].classList.add(escogerPoderesAliado(img[posImg]));
                 break;
+        }
+
+        if (img.length > 1) {
+            posImg = posImg < img.length - 1 ? posImg + 1 : 0;
         }
     }
     return elementos;
@@ -286,7 +284,26 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
     });
 }
 
-const moverAliado = (aliados, nave) => {
+const increaseStats = (aliado, nave, proyectiles) => {
+    if (aliado.classList.contains(nombre.aliado.gt)) {
+        if (time.betweenShots - poder.cadencia > 200) {
+            time.betweenShots -= poder.cadencia;
+        } else {
+            time.betweenShots = 200;
+        }
+        eventShoot = clearInterval(eventShoot);
+        eventShoot = setInterval(_ => disparar(nave, proyectiles), time.betweenShots)
+        console.log(time.betweenShots);
+    } else if (aliado.classList.contains(nombre.aliado.mascarilla)) {
+        console.log("mascarilla");
+    } else if (aliado.classList.contains(nombre.aliado.poqvnw)) {
+        console.log("poq");
+    } else if (aliado.classList.contains(nombre.aliado.koala)) {
+        console.log("koala");
+    }
+}
+
+const moverAliado = (aliados, nave, proyectiles) => {
     let yPos = 0;
     let xPos = 0;
     aliados.forEach(aliado => {
@@ -299,6 +316,8 @@ const moverAliado = (aliados, nave) => {
             if (colisionConNave(yPos, xPos, nave, tamano.aliado.ancho, tamano.aliado.alto)) {
                 aliado.classList.add(clase.esconder);
                 aliado.style.top = negativeValue(tamano.aliado.alto) + px;
+
+                increaseStats(aliado, nave, proyectiles);
             }
         }
     });
@@ -414,11 +433,11 @@ const main = (nave, vida) => {
     //Y un aliado.
     spawnItems(aliados, oneHundred);
 
-    setInterval(_ => disparar(nave, proyectiles), time.betweenShots);
+    eventShoot = setInterval(_ => disparar(nave, proyectiles), time.betweenShots);
     setInterval(_ => moverProyectiles(proyectiles, enemigos), time.movement.projectile);
     setInterval(_ => spawnItems(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => spawnItems(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => moverAliado(aliados, nave), time.movement.friends);
+    setInterval(_ => moverAliado(aliados, nave, proyectiles), time.movement.friends);
     setInterval(_ => moverEnemigo(enemigos, proyectiles, nave, vida), time.movement.enemies);
 
     window.onresize = _ => {

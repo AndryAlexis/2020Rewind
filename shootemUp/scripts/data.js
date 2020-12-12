@@ -4,7 +4,7 @@ const none = 'none';
 const oneHundred = 100;
 
 const amount = {
-    projectiles : 40,
+    projectiles : 50,
     enemies : 15,
     friends : 5
 }
@@ -97,19 +97,15 @@ const clase = {
     nave : 'nave',
     aliado : 'aliado',
     vida : 'vida',
-    menu : 'menu',
-    poderes : [
-        'cadencia',
-        'velocidadDisparo',
-        'vida',
-        'dano'
-        //DisparoDoble
-        //NaveAuxilar
-        //NaveMásPequeña
-    ]
+    menu : 'menu'
 }
 
-const poderes = [1, 1, 1, 1];
+const poder = {
+    cadencia : 50,
+    velocidadDisparo : 100,
+    vida : 0.1,
+    dano : 0.1,
+}
 
 //Las medidas de tamano se miden en píxeles, excepto tamano.movil, esas se miden en porcentajes.
 const tamano = {
