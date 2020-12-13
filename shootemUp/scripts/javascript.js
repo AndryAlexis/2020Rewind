@@ -4,6 +4,8 @@ const orden = {
 }
 
 let eventShoot = null;
+let eventStarts = null;
+
 const halfValue = (number) => number * 0.5;
 const negativeValue = (number) => number * -1;
 
@@ -284,16 +286,20 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
     });
 }
 
+const rebootShoot = (nave, proyectiles) => {
+    if (time.betweenShots - poder.cadencia > 200) {
+        time.betweenShots -= poder.cadencia;
+    } else {
+        time.betweenShots = 200;
+    }
+    eventShoot = clearInterval(eventShoot);
+    eventShoot = setInterval(_ => disparar(nave, proyectiles), time.betweenShots)
+    console.log(time.betweenShots);
+}
+
 const increaseStats = (aliado, nave, proyectiles) => {
     if (aliado.classList.contains(nombre.aliado.gt)) {
-        if (time.betweenShots - poder.cadencia > 200) {
-            time.betweenShots -= poder.cadencia;
-        } else {
-            time.betweenShots = 200;
-        }
-        eventShoot = clearInterval(eventShoot);
-        eventShoot = setInterval(_ => disparar(nave, proyectiles), time.betweenShots)
-        console.log(time.betweenShots);
+        rebootShoot(nave, proyectiles);
     } else if (aliado.classList.contains(nombre.aliado.mascarilla)) {
         console.log("mascarilla");
     } else if (aliado.classList.contains(nombre.aliado.poqvnw)) {
@@ -410,6 +416,19 @@ const onMovil = _ => {
     }
 }
 
+const changeSpeedStarts = (estrellas, eventChangeSpeedStarts) => {
+    speed.starts += speed.next.starts;
+
+    eventStarts = clearInterval(eventStarts);
+    eventStarts = setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
+
+    if (speed.starts >= speed.max.starts) {
+        eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
+    }
+}
+
+const rearrange = (elements) => elements.sort(() => Math.random() - 0.5);
+
 const main = (nave, vida) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
@@ -426,7 +445,7 @@ const main = (nave, vida) => {
 
     const proyectiles = crearElementos(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
     const enemigos = crearElementos(amount.enemies, clase.enemigo, tamano.enemigo.ancho, tamano.enemigo.alto, imagenes.enemigos, label.div);
-    const aliados = crearElementos(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div);
+    const aliados = rearrange(crearElementos(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
 
     //Meto un enemigo nada más empezar.
     spawnItems(enemigos, oneHundred);
@@ -490,5 +509,14 @@ window.addEventListener(usedEvent.load, _ => {
     }, time.countdown);
 
     setTimeout(() => main(nave, vida.childNodes[1]), time.startGame);
-    setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
+    eventStarts = setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
+    let eventChangeSpeedStarts = setInterval(() => changeSpeedStarts(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts)
+
+    let array = [20, 6, 1, 2, 0];
+    array = array.sort(() => {
+        const rnd = Math.random() - 0.5;
+        console.log(rnd);
+        return rnd;
+    });
+    console.log(array);
 });

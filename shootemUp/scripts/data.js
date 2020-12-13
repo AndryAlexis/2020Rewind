@@ -19,7 +19,13 @@ const speed = {
     projectile : 1,
     starts : 1,
     enemies : 2,
-    friends : 3
+    friends : 3,
+    max : {
+        starts : 40
+    },
+    next : {
+        starts : 1
+    }
 }
 //Máximo 1.0
 const damage = {
@@ -46,7 +52,8 @@ const time = {
         friends : 8000
     },
     countdown : 2350,
-    startGame : 2500
+    startGame : 2500,
+    changeSpeedStarts : 30000
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
