@@ -511,12 +511,4 @@ window.addEventListener(usedEvent.load, _ => {
     setTimeout(() => main(nave, vida.childNodes[1]), time.startGame);
     eventStarts = setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => changeSpeedStarts(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts)
-
-    let array = [20, 6, 1, 2, 0];
-    array = array.sort(() => {
-        const rnd = Math.random() - 0.5;
-        console.log(rnd);
-        return rnd;
-    });
-    console.log(array);
 });

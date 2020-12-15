@@ -57,8 +57,8 @@ const time = {
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
-    friends : 100,
-    enemies : 0
+    friends : 50,
+    enemies : 100
 }
 
 const urlImages = 'url(./img/';
@@ -108,7 +108,7 @@ const clase = {
 }
 
 const poder = {
-    cadencia : 50,
+    cadencia : 100,
     velocidadDisparo : 100,
     vida : 0.1,
     dano : 0.1,
