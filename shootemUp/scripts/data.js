@@ -29,8 +29,8 @@ const speed = {
 }
 //Máximo 1.0
 const damage = {
-    projectile : 0.2, 
-    enemie : 0.1
+    projectile : 0.3, 
+    enemy : 0.1
 }
 
 const label = {
@@ -48,16 +48,16 @@ const time = {
     },
     betweenShots : 2000,
     spawn : {
-        enemies : 15000,
-        friends : 8000
+        enemies : 10000,
+        friends : 6000
     },
     countdown : 2350,
     startGame : 2500,
-    changeSpeedStarts : 30000
+    changeSpeedStarts : 15000
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
-    friends : 50,
+    friends : 100,
     enemies : 100
 }
 
@@ -109,9 +109,13 @@ const clase = {
 
 const poder = {
     cadencia : 100,
-    velocidadDisparo : 100,
+    velocidadDisparo : 1,
     vida : 0.1,
     dano : 0.1,
+    max : {
+        cadencia : 200,
+        velocidadDisparo : 100
+    }
 }
 
 //Las medidas de tamano se miden en píxeles, excepto tamano.movil, esas se miden en porcentajes.
