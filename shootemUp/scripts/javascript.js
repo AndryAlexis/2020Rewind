@@ -1,10 +1,3 @@
-const orden = {
-    proyectil : 0,
-    enemigo : 0,
-}
-
-let rateOfFireEvent = null;
-let speedShootEvent = null;
 let speedStartsEvent = null;
 
 const halfValue = (number) => number * 0.5;
@@ -73,21 +66,6 @@ const moverProyectiles = (proyectiles, enemigos) => {
             }
         }
     });
-}
-
-const disparar = (nave, proyectiles) => {
-    let xPosNave = 0;
-    let yPosNave = 0;
-
-    if (!proyectiles[orden.proyectil].classList.contains(clase.disparado)) {
-        proyectiles[orden.proyectil].classList.remove(clase.esconder);
-        yPosNave = parseInt(nave.style.top.split(px)[0]);
-        proyectiles[orden.proyectil].style.top = yPosNave + tamano.proyectil.alto + px;
-        xPosNave = parseInt(nave.style.left.split(px)[0]);
-        proyectiles[orden.proyectil].style.left = xPosNave + halfValue(tamano.nave.ancho) - halfValue(tamano.proyectil.ancho) + px;
-        proyectiles[orden.proyectil].classList.add(clase.disparado);
-    }
-    orden.proyectil = orden.proyectil < proyectiles.length - 1 ? orden.proyectil + 1 : 0;
 }
 
 const moverEstrellas = (estrellas) => {
@@ -166,30 +144,6 @@ const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
     return elemento;
 }
 
-const escogerPoderesAliado = (urlImg) => Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "");
-
-const crearElementos = (cantidad, tipo, ancho, alto, img, tipoEtiqueta) => {
-    const elementos = new Array(cantidad);
-    const body = document.querySelector(label.body);
-    let posImg = 0;
-
-    for (let i = 0; i < cantidad; i++) {
-        elementos[i] = nuevoElemento(tipo, ancho, alto, img[posImg], tipoEtiqueta);
-        body.appendChild(elementos[i]);
-
-        switch (tipo) {
-            case clase.aliado:
-                elementos[i].classList.add(escogerPoderesAliado(img[posImg]));
-                break;
-        }
-
-        if (img.length > 1) {
-            posImg = posImg < img.length - 1 ? posImg + 1 : 0;
-        }
-    }
-    return elementos;
-}
-
 const comprobarLimiteItem = (yPos) => yPos >= tamano.ventana.alto;
 
 const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
@@ -244,12 +198,6 @@ const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, 
     return colision;
 }
 
-const rePrepareToSpawn = (element, heightElement) => {
-    element.classList.add(clase.esconder);
-    element.style.top = negativeValue(heightElement) + px;
-    element.style.opacity = '1';
-}
-
 const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
     let yPos = 0;
     let xPos = 0;
@@ -266,10 +214,10 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
             const opacidadActual = parseFloat(enemigo.style.opacity);
 
             if (opacidadActual <= 0.0) {
-                rePrepareToSpawn(enemigo, tamano.enemigo.alto);
+                item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
 
             } else if (colisionConNave(yPos, xPos, nave, tamano.enemigo.ancho, tamano.enemigo.alto) || comprobarLimiteItem(yPos)) {
-                rePrepareToSpawn(enemigo, tamano.enemigo.alto);
+                item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
 
                 const currentLife = vida.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
                 vida.style.width = currentLife + percentage;
@@ -281,97 +229,6 @@ const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
             }
         }
     });
-}
-
-const rebootRateOfFireShoot = (nave, proyectiles) => {
-    if (time.betweenShots - poder.cadencia > poder.max.cadencia) {
-        time.betweenShots -= poder.cadencia;
-    } else {
-        time.betweenShots = poder.max.cadencia;
-    }
-    rateOfFireEvent = clearInterval(rateOfFireEvent);
-    rateOfFireEvent = setInterval(_ => disparar(nave, proyectiles), time.betweenShots)
-}
-
-const heal = (vida) => {
-    let currentLife = parseInt(vida.style.width.split(percentage)[0]);
-    //Si la vida actual es menor al 100%, se le curará.
-    currentLife += currentLife < oneHundred ? oneHundred * poder.vida : 0;
-    //Si con la suma anterior se pasa del 100%, me aseguro que sea siempre 100%.
-    currentLife = currentLife > oneHundred ? oneHundred : currentLife;
-    vida.style.width = currentLife + percentage;
-}
-
-const increaseStats = (aliado, nave, proyectiles, vida) => {
-    if (aliado.classList.contains(nombre.aliado.gt)) {
-        rebootRateOfFireShoot(nave, proyectiles);
-    } else if (aliado.classList.contains(nombre.aliado.mascarilla)) {
-        heal(vida);
-    } else if (aliado.classList.contains(nombre.aliado.poqvnw)) {
-        damage.projectile += damage.projectile < 1 ? poder.dano : 0;
-        damage.projectile = Math.round(damage.projectile * 10) / 10;
-    } else if (aliado.classList.contains(nombre.aliado.koala)) {
-        speed.projectile += poder.velocidadDisparo;
-    }
-}
-
-const reassignRole = (element, images) => {
-    const rnd = Math.floor(Math.random() * images.length);
-
-    let chosedImage = null;
-    images.forEach((image, i) => {
-        if (i == rnd) chosedImage = image;
-    });
-    //Le quito la clase que determinaba el tipo de aliado que era hasta ahora.
-    element.classList.remove(escogerPoderesAliado(element.style.backgroundImage));
-    //Cambio su imagen.
-    element.style.backgroundImage = chosedImage;
-    //Y finalmente reasigno su nuevo poder según si nueva imagen.
-    element.classList.add(escogerPoderesAliado(chosedImage));
-}
-
-const moverAliado = (aliados, nave, proyectiles, vida) => {
-    let yPos = 0;
-    let xPos = 0;
-    aliados.forEach(aliado => {
-        if (!aliado.classList.contains(clase.esconder)) {
-            yPos = parseInt(aliado.style.top.split(px)[0]);
-            xPos = parseFloat(aliado.style.left.split(px)[0]);
-            aliado.style.top = yPos + speed.friends + px;
-
-            if (colisionConNave(yPos, xPos, nave, tamano.aliado.ancho, tamano.aliado.alto) || comprobarLimiteItem(yPos)) {
-                rePrepareToSpawn(aliado, tamano.aliado.alto);
-                increaseStats(aliado, nave, proyectiles, vida);
-                reassignRole(aliado, imagenes.aliados);
-            }
-        }
-    });
-}
-
-const spawnItems = (items, probabilidad) => {
-    const numero = Math.floor(Math.random() * oneHundred) + 1;
-
-    if (numero <= probabilidad) {
-        const limite = {
-            x : {
-                min : tamano.enemigo.ancho  + halfValue(tamano.enemigo.ancho),
-                max : window.innerWidth - halfValue(tamano.enemigo.ancho)
-            }
-        }
-    
-        let spawned = false;
-        items.forEach(enemigo => {
-            if (!spawned) {
-                const enemigoEscondido = enemigo.classList.contains(clase.esconder);
-                if (enemigoEscondido) {
-                    const xAleatoria = Math.floor(Math.random() * (limite.x.max - limite.x.min));
-                    enemigo.classList.remove(clase.esconder);
-                    enemigo.style.left = xAleatoria + px;
-                    spawned = true;
-                }
-            }
-        }); 
-    }
 }
 
 const moverNaveDispMovil = (event, nave) => {
@@ -447,8 +304,6 @@ const changeSpeedStarts = (estrellas, eventChangeSpeedStarts) => {
     }
 }
 
-const rearrange = (elements) => elements.sort(() => Math.random() - 0.5);
-
 const main = (nave, vida) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
@@ -463,20 +318,20 @@ const main = (nave, vida) => {
         document.addEventListener(usedEvent.mousemove, (event) => moverNaveOrdenador(event, nave));
     }
 
-    const proyectiles = crearElementos(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
-    const enemigos = crearElementos(amount.enemies, clase.enemigo, tamano.enemigo.ancho, tamano.enemigo.alto, imagenes.enemigos, label.div);
-    const aliados = rearrange(crearElementos(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
+    const proyectiles = item.create(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
+    const enemigos = item.create(amount.enemies, clase.enemigo, tamano.enemigo.ancho, tamano.enemigo.alto, imagenes.enemigos, label.div);
+    const aliados = item.rearrange(item.create(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
 
     //Meto un enemigo nada más empezar.
-    spawnItems(enemigos, oneHundred);
+    item.spawn(enemigos, oneHundred);
     //Y un aliado.
-    spawnItems(aliados, oneHundred);
+    item.spawn(aliados, oneHundred);
 
-    rateOfFireEvent = setInterval(_ => disparar(nave, proyectiles), time.betweenShots);
+    rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => moverProyectiles(proyectiles, enemigos), time.movement.projectile);
-    setInterval(_ => spawnItems(enemigos, probability.enemies), time.spawn.enemies);
-    setInterval(_ => spawnItems(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => moverAliado(aliados, nave, proyectiles, vida), time.movement.friends);
+    setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
+    setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
+    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => moverEnemigo(enemigos, proyectiles, nave, vida), time.movement.enemies);
 
     window.onresize = _ => {

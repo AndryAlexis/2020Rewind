@@ -53,7 +53,8 @@ const time = {
     },
     countdown : 2350,
     startGame : 2500,
-    changeSpeedStarts : 15000
+    changeSpeedStarts : 15000,
+    showingPowerUp : 1500
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
@@ -64,6 +65,7 @@ const probability = {
 const urlImages = 'url(./img/';
 const urlEnemies = urlImages + 'items/enemies/';
 const urlFriends = urlImages + 'items/friends/';
+const urlPowerUps = urlImages + 'powerUps/';
 const png = '.png)';
 
 const nombre = {
@@ -77,6 +79,12 @@ const nombre = {
         mascarilla : 'mascarilla',
         poqvnw : 'poqvnw',
         koala : 'koala'
+    }, 
+    powerUp : {
+        fireOfRate : 'fireOfRate',
+        heal : 'heal',
+        otro : 'otro',
+        parentesis : 'parentesis'
     }
 }
 
@@ -92,6 +100,12 @@ const imagenes = {
         urlFriends + nombre.aliado.mascarilla + png,
         urlFriends + nombre.aliado.poqvnw + png,
         urlFriends + nombre.aliado.koala + png
+    ],
+    powerUps : [
+        urlPowerUps + nombre.powerUp.fireOfRate + png,
+        urlPowerUps + nombre.powerUp.heal + png,
+        urlPowerUps + nombre.powerUp.otro + png,
+        urlPowerUps + nombre.powerUp.parentesis + png
     ]
 }
 
