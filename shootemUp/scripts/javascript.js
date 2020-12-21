@@ -1,102 +1,5 @@
 let speedStartsEvent = null;
 
-const halfValue = (number) => number * 0.5;
-const negativeValue = (number) => number * -1;
-
-const comprobarColisiones = (elemento, colisionadores, altoElemento, anchoElemento, altoColisionador, anchoColisionador) => {
-    const yElemento = parseInt(elemento.style.top.split(px)[0]);
-    const xElemento = parseInt(elemento.style.left.split(px)[0]);
-
-    let boundsColisionador = null;
-    let yColisionador = 0;
-    let xColisionador = 0;
-
-    colisionadores.forEach(colisionador => {
-        //Si el elemento no está escondido, es decir, que está recorriendo la pantalla.
-        if (!colisionador.classList.contains(clase.esconder)) {
-            yColisionador = parseInt(colisionador.style.top.split(px)[0]);
-            xColisionador = parseInt(colisionador.style.left.split(px)[0]);
-    
-            boundsColisionador = {
-                y : {
-                    max : yColisionador,
-                    min : yColisionador + altoColisionador - altoElemento
-                },
-                x : {
-                    min : xColisionador - anchoElemento,
-                    max : xColisionador + anchoColisionador
-                }
-            }
-    
-            if(yElemento <= boundsColisionador.y.min && yElemento >= boundsColisionador.y.max) {
-                if (xElemento >= boundsColisionador.x.min && xElemento <= boundsColisionador.x.max) {
-                    elemento.classList.remove(clase.disparado);
-                    elemento.classList.add(clase.esconder);
-                    let opacidadActual = parseFloat(colisionador.style.opacity);
-                    opacidadActual -= damage.projectile;
-                    colisionador.style.opacity = '' + opacidadActual;
-                }
-            }
-        }
-    });
-}
-
-const comprobarLimiteProyectil = (proyectil) => {
-    const yPos = parseInt(proyectil.style.top.split(px)[0]);
-    const height = parseInt(proyectil.style.height.split(px)[0]);
-
-    //Si el proyectil se sale de la parte superior de la pantalla + la de su propia altura * 1.4, desaparecerá.
-    if (yPos <= negativeValue(height * 1.4)) { 
-        proyectil.classList.remove(clase.disparado);
-        proyectil.classList.add(clase.esconder);
-    }
-}
-
-const moverProyectiles = (proyectiles, enemigos) => {
-    let actualPosProyectil = 0;
-
-    proyectiles.forEach(proyectil => {
-        if (!proyectil.classList.contains(clase.esconder)) {
-            if (proyectil.classList.contains(clase.disparado)) {
-                actualPosProyectil = parseInt(proyectil.style.top.split(px)[0]) - speed.projectile;
-                proyectil.style.top = actualPosProyectil + px;
-
-                comprobarLimiteProyectil(proyectil);
-                comprobarColisiones(proyectil, enemigos, tamano.proyectil.alto, tamano.proyectil.ancho, tamano.enemigo.alto, tamano.enemigo.ancho);
-            }
-        }
-    });
-}
-
-const moverEstrellas = (estrellas) => {
-
-    let top = 0;
-    let alto = 0;
-    let actualY = 0;
-
-    estrellas.forEach((estrella, i) => {
-        top = parseInt(estrella.style.top.split(px)[0]);
-        if (top >= tamano.ventana.alto) {
-            alto = parseInt(estrella.style.height.split(px)[0]);
-            estrella.classList.add(clase.esconder);
-            if (i == 0) {
-                top = parseInt(estrellas[i + 2].style.top.split(px)[0]);
-                estrella.style.top = top - alto + px;
-            } else if (i == 1) {
-                top = parseInt(estrellas[i + 1].style.top.split(px)[0]);
-                estrella.style.top = top - alto * 2 + px;
-            } else {
-                top = parseInt(estrellas[0].style.top.split(px)[0]);
-                estrella.style.top = top - alto * 2 - speed.starts + px;
-            }
-        } else {
-            estrella.classList.remove(clase.esconder);
-        }
-        actualY = parseInt(estrella.style.top.split(px)[0]);
-        estrella.style.top = actualY + speed.starts + px;
-    });
-}
-
 const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     nave.style.width = anchoNave + px;
     nave.style.height = altoNave + px;
@@ -144,7 +47,7 @@ const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
     return elemento;
 }
 
-const comprobarLimiteItem = (yPos) => yPos >= tamano.ventana.alto;
+// const comprobarLimiteItem = (yPos) => yPos >= tamano.ventana.alto;
 
 const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
     const yPosNave = parseFloat(nave.style.top.split(px)[0]);
@@ -198,112 +101,6 @@ const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, 
     return colision;
 }
 
-const moverEnemigo = (enemigos, proyectiles, nave, vida) => {
-    let yPos = 0;
-    let xPos = 0;
-
-    enemigos.forEach(enemigo => {
-        if (!enemigo.classList.contains(clase.esconder)) {
-            yPos = parseInt(enemigo.style.top.split(px)[0]);
-            xPos = parseInt(enemigo.style.left.split(px)[0]);
-
-            enemigo.style.top = yPos + speed.enemies + px;
-
-            comprobarColisiones(enemigo, proyectiles, tamano.enemigo.alto, tamano.enemigo.ancho, tamano.proyectil.alto, tamano.proyectil.ancho);
-
-            const opacidadActual = parseFloat(enemigo.style.opacity);
-
-            if (opacidadActual <= 0.0) {
-                item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
-
-            } else if (colisionConNave(yPos, xPos, nave, tamano.enemigo.ancho, tamano.enemigo.alto) || comprobarLimiteItem(yPos)) {
-                item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
-
-                const currentLife = vida.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
-                vida.style.width = currentLife + percentage;
-
-                if (currentLife <= 0) {
-                    alert('Has morido fuertemente.');
-                    vida.style.width = oneHundred + percentage;
-                } 
-            }
-        }
-    });
-}
-
-const moverNaveDispMovil = (event, nave) => {
-    const touchPos = {
-        x : event.changedTouches[0].screenX,
-        y : event.changedTouches[0].screenY
-    }
-
-    const limit = {
-        x : {
-            min : halfValue(tamano.nave.ancho),
-            max : tamano.ventana.ancho - tamano.nave.ancho + halfValue(tamano.nave.ancho)
-        },
-        y : {
-            min : tamano.ventana.ancho * (10 / oneHundred),
-            max : tamano.ventana.alto * (90 / oneHundred)
-        }
-    }
-    
-    // if (touchPos.x >= limit.x.min && touchPos.x <= limit.x.max) {
-    //     nave.style.left = touchPos.x - tamano.nave.ancho * 0.5 + px;
-    // } else {
-    //     nave.style.left = touchPos.x < limit.x.min ? limit.x.min + px : limit.x.max + px;
-    // }
-
-    nave.style.left = touchPos.x - halfValue(tamano.nave.ancho) + px;
-}
-
-const moverNaveOrdenador = (event, nave) => {
-    const coordRaton = {
-        x : event.clientX,
-        y : event.clientY
-    };
-
-    const limitesVentana = {
-        x : {
-            min : tamano.nave.ancho * 0.1,
-            max : tamano.ventana.ancho - tamano.nave.ancho * 0.1
-        },
-        y : {
-            min : tamano.nave.alto,
-            max : tamano.ventana.alto
-        }
-    }
-
-    if (coordRaton.x > limitesVentana.x.min && coordRaton.x < limitesVentana.x.max) {
-        nave.style.left = coordRaton.x - halfValue(tamano.nave.ancho) + px;
-    }
-
-    if (coordRaton.y > limitesVentana.y.min && coordRaton.y < limitesVentana.y.max) {
-        nave.style.top = coordRaton.y - tamano.nave.alto + px;
-    }
-};
-
-const onMovil = _ => {
-    //Condición que comprueba si la página ha sido abierta desde un dispositivo móvil.
-    if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-const changeSpeedStarts = (estrellas, eventChangeSpeedStarts) => {
-    speed.starts += speed.next.starts;
-
-    speedStartsEvent = clearInterval(speedStartsEvent);
-    speedStartsEvent = setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
-
-    //Cuando la velocidad de las estrellas llegue a su máximo, se dejará de ejecutar la función changeSpeedStarts.
-    if (speed.starts >= speed.max.starts) {
-        eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
-    }
-}
-
 const main = (nave, vida) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
@@ -312,10 +109,10 @@ const main = (nave, vida) => {
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
         tamano.nave.alto = tamano.nave.ancho * 1.1;
         //Movimiento de la nave si se hace desde un dispositivo móvil.
-        document.addEventListener(usedEvent.touchstart, (event) => moverNaveDispMovil(event, nave));
+        document.addEventListener(usedEvent.touchstart, (event) => item.ship.movil.move(event, nave));
     } else {
         //Movimiento de la nave si se hace desde un ordenador.
-        document.addEventListener(usedEvent.mousemove, (event) => moverNaveOrdenador(event, nave));
+        document.addEventListener(usedEvent.mousemove, (event) => item.ship.computer.move(event, nave));
     }
 
     const proyectiles = item.create(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
@@ -328,11 +125,11 @@ const main = (nave, vida) => {
     item.spawn(aliados, oneHundred);
 
     rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
-    speedShootEvent = setInterval(_ => moverProyectiles(proyectiles, enemigos), time.movement.projectile);
+    speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
-    setInterval(_ => moverEnemigo(enemigos, proyectiles, nave, vida), time.movement.enemies);
+    setInterval(_ => item.enemy.move(enemigos, proyectiles, nave, vida), time.movement.enemies);
 
     window.onresize = _ => {
         tamano.ventana.ancho = window.innerWidth;
@@ -384,6 +181,6 @@ window.addEventListener(usedEvent.load, _ => {
     }, time.countdown);
 
     setTimeout(() => main(nave, vida.childNodes[1]), time.startGame);
-    speedStartsEvent = setInterval(_ => moverEstrellas(estrellas), time.movement.starts);
-    let eventChangeSpeedStarts = setInterval(() => changeSpeedStarts(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts)
+    speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
+    let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts)
 });

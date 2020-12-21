@@ -3,6 +3,18 @@ const percentage = '%';
 const none = 'none';
 const oneHundred = 100;
 
+const halfValue = (number) => number * 0.5;
+const negativeValue = (number) => number * -1;
+
+const onMovil = _ => {
+    //Condición que comprueba si la página ha sido abierta desde un dispositivo móvil.
+    if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 const amount = {
     projectiles : 50,
     enemies : 15,
