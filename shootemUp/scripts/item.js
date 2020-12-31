@@ -10,13 +10,64 @@ item = {
     checkLimit : (yPos) => {
         return (yPos) >= tamano.ventana.alto;
     },
+    collisionWithShip : (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
+        const yPosNave = parseFloat(nave.style.top.split(px)[0]);
+        const xPosNave = parseFloat(nave.style.left.split(px)[0]);
+    
+        const percentage = {
+            x : tamano.nave.ancho * tamano.colisionador.nave.ancho,
+            y : {
+                top : tamano.nave.alto * tamano.colisionador.nave.alto.top,
+                bottom : tamano.nave.alto * tamano.colisionador.nave.alto.bottom
+            }
+        }
+    
+        const boundsNave = {
+            x : {
+                min : xPosNave + percentage.x,
+                max : (xPosNave + tamano.nave.ancho) - percentage.x,
+            },
+            y : {
+                min : yPosNave + percentage.y.bottom,
+                max : yPosNave + percentage.y.top
+            }
+        }
+    
+        const boundsColisionador = {
+            x : {
+                min : xColisionador,
+                max : xColisionador + anchoColisionador
+            },
+            y : {
+                min : yColisionador + altoColisionador,
+                max : yColisionador
+            }
+        }
+    
+        let colision = false;
+    
+        if (boundsNave.x.min >= boundsColisionador.x.min && boundsNave.x.min <= boundsColisionador.x.max) {
+            if (boundsNave.y.min <= boundsColisionador.y.min && boundsNave.y.min >= boundsColisionador.y.max) {
+                colision = true;
+            } else if (boundsNave.y.max >= boundsColisionador.y.max && boundsNave.y.max <= boundsColisionador.y.min) {
+                colision = true;
+            }
+        } else if (boundsNave.x.max <= boundsColisionador.x.max && boundsNave.x.max >= boundsColisionador.x.min) {
+            if (boundsNave.y.min <= boundsColisionador.y.min && boundsNave.y.min >= boundsColisionador.y.max) {
+                colision = true;
+            } else if (boundsNave.y.max >= boundsColisionador.y.max && boundsNave.y.max <= boundsColisionador.y.min) {
+                colision = true;
+            }
+        }
+        return colision;
+    },
     create : (amount, type, width, height, img, labelType) => {
         const items = new Array(amount);
         const body = document.querySelector(label.body);
         let posImg = 0;
     
         for (let i = 0; i < amount; i++) {
-            items[i] = nuevoElemento(type, width, height, img[posImg], labelType);
+            items[i] = newElement(type, width, height, img[posImg], labelType);
             body.appendChild(items[i]);
     
             switch (type) {
@@ -96,7 +147,7 @@ item = {
                     xPos = parseFloat(ally.style.left.split(px)[0]);
                     ally.style.top = yPos + speed.friends + px;
         
-                    if (colisionConNave(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
+                    if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
                         item.ally.rePrepareToSpawn(ally, tamano.aliado.alto);
                         item.ally.increaseStats(ally, ship, projectiles, life);
                         item.ally.reassignRole(ally, imagenes.aliados);
@@ -191,7 +242,7 @@ item = {
                     if (opacidadActual <= 0.0) {
                         item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
         
-                    } else if (colisionConNave(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
+                    } else if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
                         item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);

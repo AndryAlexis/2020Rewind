@@ -50,15 +50,37 @@ body {
     border-radius: 10px;
 }
 
-.vida div {
+.vida div:first-of-type {
     background-color: red;
     height: 100%;
     width: 90%;
 
     border-radius: 10px;
 
+    display: flex; 
+}
+
+.top-menu {
+    width: 96%;
+    position: absolute;
     display: flex;
-    flex-direction: column;
+
+    margin-left: 2%;
+}
+
+.top-menu div {
+    width: 50%;
+}
+
+.top-menu div:first-of-type {
+    background-color: blue;
+}
+
+.top-menu div:last-of-type {
+    text-align: right;
+    font-size: 20px;
+    color: white;
+    letter-spacing: 2px;
 }
 
 .esconder {
@@ -131,7 +153,6 @@ body {
 
     margin-top: 45%;
 }
-
 /* .final {
     width: 100vw;
     height: 100vh;

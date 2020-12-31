@@ -1,6 +1,7 @@
 let speedStartsEvent = null;
 
 const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
+    nave.style.display = none;
     nave.style.width = anchoNave + px;
     nave.style.height = altoNave + px;
     nave.style.top = tamano.ventana.alto * 0.7 + px;
@@ -20,7 +21,7 @@ const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     });
 }
 
-const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
+const newElement = (tipo, ancho, alto, img, tipoEtiqueta) => {
     const elemento = document.createElement(tipoEtiqueta);
 
     switch (tipoEtiqueta) {
@@ -45,60 +46,6 @@ const nuevoElemento = (tipo, ancho, alto, img, tipoEtiqueta) => {
     elemento.classList.add(clase.esconder, tipo);
 
     return elemento;
-}
-
-// const comprobarLimiteItem = (yPos) => yPos >= tamano.ventana.alto;
-
-const colisionConNave = (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
-    const yPosNave = parseFloat(nave.style.top.split(px)[0]);
-    const xPosNave = parseFloat(nave.style.left.split(px)[0]);
-
-    const percentage = {
-        x : tamano.nave.ancho * tamano.colisionador.nave.ancho,
-        y : {
-            top : tamano.nave.alto * tamano.colisionador.nave.alto.top,
-            bottom : tamano.nave.alto * tamano.colisionador.nave.alto.bottom
-        }
-    }
-
-    const boundsNave = {
-        x : {
-            min : xPosNave + percentage.x,
-            max : (xPosNave + tamano.nave.ancho) - percentage.x,
-        },
-        y : {
-            min : yPosNave + percentage.y.bottom,
-            max : yPosNave + percentage.y.top
-        }
-    }
-
-    const boundsColisionador = {
-        x : {
-            min : xColisionador,
-            max : xColisionador + anchoColisionador
-        },
-        y : {
-            min : yColisionador + altoColisionador,
-            max : yColisionador
-        }
-    }
-
-    let colision = false;
-
-    if (boundsNave.x.min >= boundsColisionador.x.min && boundsNave.x.min <= boundsColisionador.x.max) {
-        if (boundsNave.y.min <= boundsColisionador.y.min && boundsNave.y.min >= boundsColisionador.y.max) {
-            colision = true;
-        } else if (boundsNave.y.max >= boundsColisionador.y.max && boundsNave.y.max <= boundsColisionador.y.min) {
-            colision = true;
-        }
-    } else if (boundsNave.x.max <= boundsColisionador.x.max && boundsNave.x.max >= boundsColisionador.x.min) {
-        if (boundsNave.y.min <= boundsColisionador.y.min && boundsNave.y.min >= boundsColisionador.y.max) {
-            colision = true;
-        } else if (boundsNave.y.max >= boundsColisionador.y.max && boundsNave.y.max <= boundsColisionador.y.min) {
-            colision = true;
-        }
-    }
-    return colision;
 }
 
 const main = (nave, vida) => {
@@ -130,12 +77,6 @@ const main = (nave, vida) => {
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.enemy.move(enemigos, proyectiles, nave, vida), time.movement.enemies);
-
-    window.onresize = _ => {
-        tamano.ventana.ancho = window.innerWidth;
-        tamano.ventana.alto = window.innerHeight;
-        document.querySelector(label.body).style.backgroundSize = tamano.ventana.ancho + px + ' ' + tamano.ventana.alto + px;
-    }
 }
 
 window.addEventListener(usedEvent.load, _ => {
@@ -143,7 +84,6 @@ window.addEventListener(usedEvent.load, _ => {
     tamano.ventana.alto = window.innerHeight;
 
     const nave = document.querySelector('.' + clase.nave);
-    nave.style.display = none;
     const vida = document.querySelector('.' + clase.vida);
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
 
@@ -172,15 +112,22 @@ window.addEventListener(usedEvent.load, _ => {
 
     menu.style.marginTop = marginTopMenu + px;
     document.querySelector('.' + clase.menu + ' ' + label.div + ' ' + label.img).src = './gif/countdown.gif';
-    // document.querySelector('.menu div img').src = './gif/countdown.gif';
     setTimeout(() =>  {
+        
         document.querySelector('.' + clase.menu).style.display = none;
         menu.style.display = none;
         nave.style.display = 'block';
         vida.style.display = 'block';
+
     }, time.countdown);
 
     setTimeout(() => main(nave, vida.childNodes[1]), time.startGame);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
-    let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts)
+    let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 });
+
+window.onresize = () => {
+    tamano.ventana.ancho = window.innerWidth;
+    tamano.ventana.alto = window.innerHeight;
+    document.querySelector(label.body).style.backgroundSize = tamano.ventana.ancho + px + ' ' + tamano.ventana.alto + px;
+}
