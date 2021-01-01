@@ -7,6 +7,9 @@ let rateOfFireEvent = null;
 let speedShootEvent = null;
 
 item = {
+    zeroFill : (num, max) => {
+        return num.toString().length < max ? item.zeroFill('0' + num, max) : num
+    },
     checkLimit : (yPos) => {
         return (yPos) >= tamano.ventana.alto;
     },
@@ -86,6 +89,7 @@ item = {
         return items.sort(() => Math.random() - 0.5)
     },
     ally : {
+        points : 25,
         chooseAllyPowers : (urlImg) => 
         {
             return Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "")
@@ -138,9 +142,10 @@ item = {
                 speed.projectile += poder.velocidadDisparo;
             }
         },
-        move : (allys, ship, projectiles, life) => {
+        move : (allys, ship, projectiles, life, pointsMenu) => {
             let yPos = 0;
             let xPos = 0;
+            let currentPoints;
             allys.forEach(ally => {
                 if (!ally.classList.contains(clase.esconder)) {
                     yPos = parseInt(ally.style.top.split(px)[0]);
@@ -151,6 +156,9 @@ item = {
                         item.ally.rePrepareToSpawn(ally, tamano.aliado.alto);
                         item.ally.increaseStats(ally, ship, projectiles, life);
                         item.ally.reassignRole(ally, imagenes.aliados);
+
+                        currentPoints = parseInt(pointsMenu.textContent.trim());
+                        pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
                     } else if (item.checkLimit(yPos)) {
                         item.ally.reassignRole(ally, imagenes.aliados);
                         item.ally.rePrepareToSpawn(ally, tamano.aliado.alto);
@@ -224,9 +232,11 @@ item = {
         },
     },
     enemy : {
-        move : (enemies, projectiles, ship, life) => {
+        points : 75,
+        move : (enemies, projectiles, ship, life, pointsMenu) => {
             let yPos = 0;
             let xPos = 0;
+            let currentPoints = 0;
         
             enemies.forEach(enemigo => {
                 if (!enemigo.classList.contains(clase.esconder)) {
@@ -241,6 +251,8 @@ item = {
         
                     if (opacidadActual <= 0.0) {
                         item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
+                        currentPoints = parseInt(pointsMenu.textContent.trim());
+                        pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
         
                     } else if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
                         item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);

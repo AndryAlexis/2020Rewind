@@ -48,7 +48,7 @@ const newElement = (tipo, ancho, alto, img, tipoEtiqueta) => {
     return elemento;
 }
 
-const main = (nave, vida) => {
+const main = (nave, vida, pointsMenu) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
 
@@ -75,8 +75,8 @@ const main = (nave, vida) => {
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
-    setInterval(_ => item.enemy.move(enemigos, proyectiles, nave, vida), time.movement.enemies);
+    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida, pointsMenu), time.movement.friends);
+    setInterval(_ => item.enemy.move(enemigos, proyectiles, nave, vida, pointsMenu), time.movement.enemies);
 }
 
 window.addEventListener(usedEvent.load, _ => {
@@ -86,6 +86,7 @@ window.addEventListener(usedEvent.load, _ => {
     const nave = document.querySelector('.' + clase.nave);
     const vida = document.querySelector('.' + clase.vida);
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
+    const points = document.querySelector('.' + clase.points);
 
     const menu = document.querySelector('.' + clase.menu + ' ' + label.div);
     const marginTopMenu = halfValue(tamano.ventana.alto) - halfValue(tamano.menu.alto);
@@ -121,7 +122,7 @@ window.addEventListener(usedEvent.load, _ => {
 
     }, time.countdown);
 
-    setTimeout(() => main(nave, vida.childNodes[1]), time.startGame);
+    setTimeout(() => main(nave, vida.childNodes[1], points), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 });

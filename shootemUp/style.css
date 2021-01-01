@@ -40,47 +40,44 @@ body {
 }
 
 .vida {
-    width: 40%;
+    width: 100%;
     height: 15px;
     background-color: rgb(116, 0, 0);
-    margin-left: 2%;
-    margin-top: 2%;
     border: 1px solid black;
 
     border-radius: 10px;
+    margin-left: 2%;
 }
 
 .vida div:first-of-type {
     background-color: red;
     height: 100%;
-    width: 90%;
+    width: 100%;
 
     border-radius: 10px;
-
-    display: flex; 
 }
 
 .top-menu {
-    width: 96%;
+    width: 100%;
     position: absolute;
     display: flex;
-
-    margin-left: 2%;
+    margin-top: 1%;
 }
 
-.top-menu div {
-    width: 50%;
+.top-menu > div {
+    width: 30%;
+    display: flex;
+    align-items: center;
 }
 
-.top-menu div:first-of-type {
-    background-color: blue;
-}
-
-.top-menu div:last-of-type {
-    text-align: right;
+.top-menu > div:last-of-type {
+    width: 70%;
     font-size: 20px;
     color: white;
     letter-spacing: 2px;
+
+    justify-content: right;
+    margin-right: 2%;
 }
 
 .esconder {

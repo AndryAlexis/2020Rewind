@@ -130,7 +130,8 @@ const clase = {
     nave : 'nave',
     aliado : 'aliado',
     vida : 'vida',
-    menu : 'menu'
+    menu : 'menu',
+    points : 'points'
 }
 
 const poder = {
