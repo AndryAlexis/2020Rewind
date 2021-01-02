@@ -78,6 +78,7 @@ item = {
         switch (type) {
             case clase.enemigo:
                 element.style.height += parseInt(element.style.height.split(px)[0]) * 0.05 + px;
+                element.setAttribute(attribute.dataLife, 200);
 
                 const bodyElement = document.createElement(label);
                 bodyElement.style.width = oneHundred + percentage;
@@ -95,7 +96,7 @@ item = {
                 lifeContainer.style.backgroundColor = 'rgb(116, 0, 0)';
 
                 const life = document.createElement(label);
-                life.style.width = 80 + percentage;
+                life.style.width = oneHundred + percentage;
                 life.style.height = oneHundred + percentage;
                 life.style.backgroundColor = 'red';
 
@@ -128,7 +129,6 @@ item = {
                     items[i].classList.add(item.ally.chooseAllyPowers(img[posImg]));
                     break;
             }
-    
             if (img.length > 1) posImg = posImg < img.length - 1 ? posImg + 1 : 0;
         }
         return items;
@@ -216,9 +216,9 @@ item = {
         }
     },
     projectile : {
-        checkCollisions : (item, colliders, heightItem, widthItem, heightCollider, widthCollider) => {
-            const yElement = parseInt(item.style.top.split(px)[0]);
-            const xElement = parseInt(item.style.left.split(px)[0]);
+        checkCollisions : (enemy, colliders, heightItem, widthItem, heightCollider, widthCollider) => {
+            const yElement = parseInt(enemy.style.top.split(px)[0]);
+            const xElement = parseInt(enemy.style.left.split(px)[0]);
         
             let bounds = null;
             let yCollider = 0;
@@ -243,11 +243,13 @@ item = {
             
                     if(yElement <= bounds.y.min && yElement >= bounds.y.max) {
                         if (xElement >= bounds.x.min && xElement <= bounds.x.max) {
-                            item.classList.remove(clase.disparado);
-                            item.classList.add(clase.esconder);
-                            let opacidadActual = parseFloat(collider.style.opacity);
-                            opacidadActual -= damage.projectile;
-                            collider.style.opacity = '' + opacidadActual;
+                            enemy.classList.add(clase.esconder);
+                            if (enemy.classList.contains(clase.disparado)) {
+                                enemy.classList.remove(clase.disparado);
+                            }
+                            // let opacidadActual = parseFloat(collider.style.opacity);
+                            // opacidadActual -= damage.projectile;
+                            // collider.style.opacity = '' + opacidadActual;
                         }
                     }
                 }
@@ -280,30 +282,31 @@ item = {
         },
     },
     enemy : {
+        maxLife : 10,
         points : 75,
         move : (enemies, projectiles, ship, life, pointsMenu) => {
             let yPos = 0;
             let xPos = 0;
             let currentPoints = 0;
         
-            enemies.forEach(enemigo => {
-                if (!enemigo.classList.contains(clase.esconder)) {
-                    yPos = parseInt(enemigo.style.top.split(px)[0]);
-                    xPos = parseInt(enemigo.style.left.split(px)[0]);
+            enemies.forEach(enemy => {
+                if (!enemy.classList.contains(clase.esconder)) {
+                    yPos = parseInt(enemy.style.top.split(px)[0]);
+                    xPos = parseInt(enemy.style.left.split(px)[0]);
         
-                    enemigo.style.top = yPos + speed.enemies + px;
+                    enemy.style.top = yPos + speed.enemies + px;
         
-                    item.projectile.checkCollisions(enemigo, projectiles, tamano.enemigo.alto, tamano.enemigo.ancho, tamano.proyectil.alto, tamano.proyectil.ancho);
-        
-                    const opacidadActual = parseFloat(enemigo.style.opacity);
+                    item.projectile.checkCollisions(enemy, projectiles, tamano.enemigo.alto, tamano.enemigo.ancho, tamano.proyectil.alto, tamano.proyectil.ancho);
+                    
+                    const opacidadActual = parseFloat(enemy.style.opacity);
         
                     if (opacidadActual <= 0.0) {
-                        item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
+                        item.ally.rePrepareToSpawn(enemy, tamano.enemigo.alto);
                         currentPoints = parseInt(pointsMenu.textContent.trim());
                         pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
         
                     } else if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
-                        item.ally.rePrepareToSpawn(enemigo, tamano.enemigo.alto);
+                        item.ally.rePrepareToSpawn(enemy, tamano.enemigo.alto);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
                         life.style.width = currentLife + percentage;
