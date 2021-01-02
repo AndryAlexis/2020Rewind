@@ -64,13 +64,63 @@ item = {
         }
         return colision;
     },
-    create : (amount, type, width, height, img, labelType) => {
+    create : (type, width, height, img, label) => {
+        const element = document.createElement(label);
+    
+        element.style.opacity = 1;
+        element.style.width = width + px;
+        element.style.height = height + px;
+        element.style.top = negativeValue(width) + px;
+        element.style.left = 0 + px;
+        element.style.position = 'absolute';
+        element.classList.add(clase.esconder, type);
+
+        switch (type) {
+            case clase.enemigo:
+                element.style.height += parseInt(element.style.height.split(px)[0]) * 0.05 + px;
+
+                const bodyElement = document.createElement(label);
+                bodyElement.style.width = oneHundred + percentage;
+                bodyElement.style.height = 95 + percentage;
+                bodyElement.style.backgroundImage = img;
+                bodyElement.style.backgroundPosition = 'center';
+                bodyElement.style.backgroundRepeat = 'no-repeat';
+                bodyElement.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
+                bodyElement.style.opacity = 1;
+
+                const lifeContainer = document.createElement(label);
+                lifeContainer.style.border = '1px solid white';
+                lifeContainer.style.width = oneHundred + percentage;
+                lifeContainer.style.height = 5 + percentage;
+                lifeContainer.style.backgroundColor = 'rgb(116, 0, 0)';
+
+                const life = document.createElement(label);
+                life.style.width = 80 + percentage;
+                life.style.height = oneHundred + percentage;
+                life.style.backgroundColor = 'red';
+
+                lifeContainer.appendChild(life);
+
+                element.appendChild(bodyElement);
+                element.appendChild(lifeContainer);
+                break;
+            default:
+                element.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
+                element.style.backgroundPosition = 'center';
+                element.style.backgroundRepeat = 'no-repeat';
+                element.style.backgroundImage = img;
+                break;
+        } 
+
+        return element;
+    },
+    createArray : (amount, type, width, height, img, labelType) => {
         const items = new Array(amount);
         const body = document.querySelector(label.body);
         let posImg = 0;
     
         for (let i = 0; i < amount; i++) {
-            items[i] = newElement(type, width, height, img[posImg], labelType);
+            items[i] = item.create(type, width, height, img[posImg], labelType);
             body.appendChild(items[i]);
     
             switch (type) {
@@ -79,9 +129,7 @@ item = {
                     break;
             }
     
-            if (img.length > 1) {
-                posImg = posImg < img.length - 1 ? posImg + 1 : 0;
-            }
+            if (img.length > 1) posImg = posImg < img.length - 1 ? posImg + 1 : 0;
         }
         return items;
     },

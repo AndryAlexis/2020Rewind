@@ -64,7 +64,7 @@ body {
     margin-top: 1%;
 }
 
-.top-menu > div {
+.top-menu > div:first-of-type {
     width: 30%;
     display: flex;
     align-items: center;
@@ -77,6 +77,7 @@ body {
     letter-spacing: 2px;
 
     justify-content: right;
+    text-align: right;
     margin-right: 2%;
 }
 
@@ -150,6 +151,9 @@ body {
 
     margin-top: 45%;
 }
+
+
+
 /* .final {
     width: 100vw;
     height: 100vh;

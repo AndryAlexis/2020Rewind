@@ -21,32 +21,32 @@ const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     });
 }
 
-const newElement = (tipo, ancho, alto, img, tipoEtiqueta) => {
-    const elemento = document.createElement(tipoEtiqueta);
+// const createElement = (type, width, height, img, label) => {
+//     const elemento = document.createElement(label);
+//     console.log(type);
 
-    switch (tipoEtiqueta) {
-        case label.div:
-            // elemento.style.backgroundSize = ancho + px + ' ' + alto + px;
-            elemento.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
-            elemento.style.backgroundPosition = 'center';
-            elemento.style.backgroundRepeat = 'no-repeat';
-            elemento.style.backgroundImage = img;
-            break;
-        default:
-            elemento.src = img;
-            break;
-    }
+//     switch (type) {
+//         case clase.enemigo:
 
-    elemento.style.opacity = 1;
-    elemento.style.width = ancho + px;
-    elemento.style.height = alto + px;
-    elemento.style.top = negativeValue(ancho) + px;
-    elemento.style.left = 0 + px;
-    elemento.style.position = 'absolute';
-    elemento.classList.add(clase.esconder, tipo);
+//             break;
+//         default:
+//             elemento.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
+//             elemento.style.backgroundPosition = 'center';
+//             elemento.style.backgroundRepeat = 'no-repeat';
+//             elemento.style.backgroundImage = img;
+        
+//             elemento.style.opacity = 1;
+//             elemento.style.width = width + px;
+//             elemento.style.height = height + px;
+//             elemento.style.top = negativeValue(width) + px;
+//             elemento.style.left = 0 + px;
+//             elemento.style.position = 'absolute';
+//             elemento.classList.add(clase.esconder, type);
+//             break;
+//     }
 
-    return elemento;
-}
+//     return elemento;
+// }
 
 const main = (nave, vida, pointsMenu) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
@@ -62,9 +62,9 @@ const main = (nave, vida, pointsMenu) => {
         document.addEventListener(usedEvent.mousemove, (event) => item.ship.computer.move(event, nave));
     }
 
-    const proyectiles = item.create(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
-    const enemigos = item.create(amount.enemies, clase.enemigo, tamano.enemigo.ancho, tamano.enemigo.alto, imagenes.enemigos, label.div);
-    const aliados = item.rearrange(item.create(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
+    const proyectiles = item.createArray(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
+    const enemigos = item.createArray(amount.enemies, clase.enemigo, tamano.enemigo.ancho, tamano.enemigo.alto, imagenes.enemigos, label.div);
+    const aliados = item.rearrange(item.createArray(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
 
     //Meto un enemigo nada más empezar.
     item.spawn(enemigos, oneHundred);
