@@ -104,3 +104,5 @@ window.onresize = () => {
     tamano.ventana.alto = window.innerHeight;
     document.querySelector(label.body).style.backgroundSize = tamano.ventana.ancho + px + ' ' + tamano.ventana.alto + px;
 }
+
+//AAAAAAAAAAAAAAH
