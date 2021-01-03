@@ -105,4 +105,4 @@ window.onresize = () => {
     document.querySelector(label.body).style.backgroundSize = tamano.ventana.ancho + px + ' ' + tamano.ventana.alto + px;
 }
 
-//AAAAAAAAAAAAAAH
+alert("no entiendo");
