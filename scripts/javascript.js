@@ -53,6 +53,7 @@ const main = (nave, vida, pointsMenu) => {
 }
 
 window.addEventListener(usedEvent.load, _ => {
+    //Doy tamaño a la ventana.
     tamano.ventana.ancho = window.innerWidth;
     tamano.ventana.alto = window.innerHeight;
 
