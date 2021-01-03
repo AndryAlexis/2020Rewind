@@ -21,33 +21,6 @@ const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     });
 }
 
-// const createElement = (type, width, height, img, label) => {
-//     const elemento = document.createElement(label);
-//     console.log(type);
-
-//     switch (type) {
-//         case clase.enemigo:
-
-//             break;
-//         default:
-//             elemento.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
-//             elemento.style.backgroundPosition = 'center';
-//             elemento.style.backgroundRepeat = 'no-repeat';
-//             elemento.style.backgroundImage = img;
-        
-//             elemento.style.opacity = 1;
-//             elemento.style.width = width + px;
-//             elemento.style.height = height + px;
-//             elemento.style.top = negativeValue(width) + px;
-//             elemento.style.left = 0 + px;
-//             elemento.style.position = 'absolute';
-//             elemento.classList.add(clase.esconder, type);
-//             break;
-//     }
-
-//     return elemento;
-// }
-
 const main = (nave, vida, pointsMenu) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
@@ -75,10 +48,10 @@ const main = (nave, vida, pointsMenu) => {
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida, pointsMenu), time.movement.friends);
-    setInterval(_ => item.enemy.move(enemigos, proyectiles, nave, vida, pointsMenu), time.movement.enemies);
+    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
+    setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
 }
-
+//aaa
 window.addEventListener(usedEvent.load, _ => {
     tamano.ventana.ancho = window.innerWidth;
     tamano.ventana.alto = window.innerHeight;
@@ -86,7 +59,6 @@ window.addEventListener(usedEvent.load, _ => {
     const nave = document.querySelector('.' + clase.nave);
     const vida = document.querySelector('.' + clase.vida);
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
-    const points = document.querySelector('.' + clase.points);
 
     const menu = document.querySelector('.' + clase.menu + ' ' + label.div);
     const marginTopMenu = halfValue(tamano.ventana.alto) - halfValue(tamano.menu.alto);
@@ -122,7 +94,7 @@ window.addEventListener(usedEvent.load, _ => {
 
     }, time.countdown);
 
-    setTimeout(() => main(nave, vida.childNodes[1], points), time.countdown);
+    setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 });

@@ -6,12 +6,16 @@ const orden = {
 let rateOfFireEvent = null;
 let speedShootEvent = null;
 
-item = {
+const item = {
     zeroFill : (num, max) => {
         return num.toString().length < max ? item.zeroFill('0' + num, max) : num
     },
     checkLimit : (yPos) => {
         return (yPos) >= tamano.ventana.alto;
+    },
+    rePrepareToSpawn : (element, heightElement) => {
+        element.classList.add(clase.esconder);
+        element.style.top = negativeValue(heightElement) + px;
     },
     collisionWithShip : (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
         const yPosNave = parseFloat(nave.style.top.split(px)[0]);
@@ -78,7 +82,6 @@ item = {
         switch (type) {
             case clase.enemigo:
                 element.style.height += parseInt(element.style.height.split(px)[0]) * 0.05 + px;
-                element.setAttribute(attribute.dataLife, 200);
 
                 const bodyElement = document.createElement(label);
                 bodyElement.style.width = oneHundred + percentage;
@@ -99,6 +102,8 @@ item = {
                 life.style.width = oneHundred + percentage;
                 life.style.height = oneHundred + percentage;
                 life.style.backgroundColor = 'red';
+                life.setAttribute(attribute.dataLife, item.enemy.maxLife);
+                life.setAttribute(attribute.dataMaxLife, item.enemy.maxLife);
 
                 lifeContainer.appendChild(life);
 
@@ -156,11 +161,6 @@ item = {
             //Y finalmente reasigno su nuevo poder según su nueva imagen.
             element.classList.add(item.ally.chooseAllyPowers(chosedImage), clase.aliado);
         },
-        rePrepareToSpawn : (element, heightElement) => {
-            element.classList.add(clase.esconder);
-            element.style.top = negativeValue(heightElement) + px;
-            element.style.opacity = '1';
-        },
         rebootRateOfFireShoot : (ship, projectiles) => {
             if (time.betweenShots - poder.cadencia > poder.max.cadencia) {
                 time.betweenShots -= poder.cadencia;
@@ -190,7 +190,7 @@ item = {
                 speed.projectile += poder.velocidadDisparo;
             }
         },
-        move : (allys, ship, projectiles, life, pointsMenu) => {
+        move : (allys, ship, projectiles, life) => {
             let yPos = 0;
             let xPos = 0;
             let currentPoints;
@@ -201,28 +201,30 @@ item = {
                     ally.style.top = yPos + speed.friends + px;
         
                     if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
-                        item.ally.rePrepareToSpawn(ally, tamano.aliado.alto);
+                        item.rePrepareToSpawn(ally, tamano.aliado.alto);
                         item.ally.increaseStats(ally, ship, projectiles, life);
                         item.ally.reassignRole(ally, imagenes.aliados);
 
+                        const pointsMenu = document.querySelector('.' + clase.points);
                         currentPoints = parseInt(pointsMenu.textContent.trim());
                         pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
                     } else if (item.checkLimit(yPos)) {
                         item.ally.reassignRole(ally, imagenes.aliados);
-                        item.ally.rePrepareToSpawn(ally, tamano.aliado.alto);
+                        item.rePrepareToSpawn(ally, tamano.aliado.alto);
                     }
                 }
             });
         }
     },
     projectile : {
-        checkCollisions : (enemy, colliders, heightItem, widthItem, heightCollider, widthCollider) => {
-            const yElement = parseInt(enemy.style.top.split(px)[0]);
-            const xElement = parseInt(enemy.style.left.split(px)[0]);
+        checkCollisions : (element, colliders, heightItem, widthItem, heightCollider, widthCollider) => {
+            const yElement = parseInt(element.style.top.split(px)[0]);
+            const xElement = parseInt(element.style.left.split(px)[0]);
         
             let bounds = null;
             let yCollider = 0;
             let xCollider = 0;
+            let lifeBar, curEnemyLife, maxEnemyLife;
         
             colliders.forEach(collider => {
                 //Si el elemento no está escondido, es decir, que está recorriendo la pantalla.
@@ -243,13 +245,16 @@ item = {
             
                     if(yElement <= bounds.y.min && yElement >= bounds.y.max) {
                         if (xElement >= bounds.x.min && xElement <= bounds.x.max) {
-                            enemy.classList.add(clase.esconder);
-                            if (enemy.classList.contains(clase.disparado)) {
-                                enemy.classList.remove(clase.disparado);
-                            }
-                            // let opacidadActual = parseFloat(collider.style.opacity);
-                            // opacidadActual -= damage.projectile;
-                            // collider.style.opacity = '' + opacidadActual;
+
+                            element.classList.add(clase.esconder);
+                            element.classList.toggle(clase.disparado);
+
+                            //Obtengo el elemento div que contiene la vida del enemigo.
+                            lifeBar = collider.lastChild.lastChild;
+                            curEnemyLife = parseInt(lifeBar.getAttribute(attribute.dataLife));
+                            maxEnemyLife = parseInt(lifeBar.getAttribute(attribute.dataMaxLife));
+
+                            item.enemy.takeDamage(collider, lifeBar, curEnemyLife, maxEnemyLife);
                         }
                     }
                 }
@@ -282,12 +287,28 @@ item = {
         },
     },
     enemy : {
-        maxLife : 10,
+        maxLife : 100,
         points : 75,
-        move : (enemies, projectiles, ship, life, pointsMenu) => {
+        die : (enemy, lifeBar) => {
+            const pointsMenu = document.querySelector('.' + clase.points);
+            const currentPoints = parseInt(pointsMenu.textContent.trim());
+            pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
+
+            item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
+
+            lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
+            lifeBar.style.width = oneHundred + percentage;
+        },
+        takeDamage : (enemy, lifeBar, currentLife, currentMaxLife) => {
+            currentLife -= damage.projectile;
+            lifeBar.style.width = currentLife / currentMaxLife * oneHundred + percentage;
+            lifeBar.setAttribute(attribute.dataLife, currentLife);
+
+            if (currentLife <= 0) item.enemy.die(enemy, lifeBar);
+        },
+        move : (enemies, ship, life) => {
             let yPos = 0;
             let xPos = 0;
-            let currentPoints = 0;
         
             enemies.forEach(enemy => {
                 if (!enemy.classList.contains(clase.esconder)) {
@@ -295,18 +316,9 @@ item = {
                     xPos = parseInt(enemy.style.left.split(px)[0]);
         
                     enemy.style.top = yPos + speed.enemies + px;
-        
-                    item.projectile.checkCollisions(enemy, projectiles, tamano.enemigo.alto, tamano.enemigo.ancho, tamano.proyectil.alto, tamano.proyectil.ancho);
-                    
-                    const opacidadActual = parseFloat(enemy.style.opacity);
-        
-                    if (opacidadActual <= 0.0) {
-                        item.ally.rePrepareToSpawn(enemy, tamano.enemigo.alto);
-                        currentPoints = parseInt(pointsMenu.textContent.trim());
-                        pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
-        
-                    } else if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
-                        item.ally.rePrepareToSpawn(enemy, tamano.enemigo.alto);
+
+                    if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
+                        item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
                         life.style.width = currentLife + percentage;

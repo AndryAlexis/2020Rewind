@@ -41,7 +41,7 @@ const speed = {
 }
 //Máximo 1.0
 const damage = {
-    projectile : 10, 
+    projectile : 50, 
     enemy : 0.1
 }
 
@@ -122,7 +122,8 @@ const imagenes = {
 }
 
 const attribute = {
-    dataLife : 'data-life'
+    dataLife : 'data-currentLife',
+    dataMaxLife : 'data-currentMaxLife'
 }
 
 const clase = {
@@ -135,7 +136,7 @@ const clase = {
     aliado : 'aliado',
     vida : 'vida',
     menu : 'menu',
-    points : 'points'
+    points : 'points',
 }
 
 const poder = {
