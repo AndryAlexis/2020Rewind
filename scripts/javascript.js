@@ -51,7 +51,7 @@ const main = (nave, vida, pointsMenu) => {
     setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
 }
-//aaa
+
 window.addEventListener(usedEvent.load, _ => {
     tamano.ventana.ancho = window.innerWidth;
     tamano.ventana.alto = window.innerHeight;
@@ -104,5 +104,3 @@ window.onresize = () => {
     tamano.ventana.alto = window.innerHeight;
     document.querySelector(label.body).style.backgroundSize = tamano.ventana.ancho + px + ' ' + tamano.ventana.alto + px;
 }
-
-alert("no entiendo");
