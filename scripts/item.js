@@ -7,12 +7,10 @@ let rateOfFireEvent = null;
 let speedShootEvent = null;
 
 const item = {
-    zeroFill : (num, max) => {
-        return num.toString().length < max ? item.zeroFill('0' + num, max) : num
-    },
-    checkLimit : (yPos) => {
-        return (yPos) >= tamano.ventana.alto;
-    },
+    zeroFill : (num, max) => num.toString().length < max ? item.zeroFill('0' + num, max) : num
+    ,
+    checkLimit : (yPos) => (yPos) >= tamano.ventana.alto
+    ,
     rePrepareToSpawn : (element, heightElement) => {
         element.classList.add(clase.esconder);
         element.style.top = negativeValue(heightElement) + px;
@@ -117,7 +115,6 @@ const item = {
                 element.style.backgroundImage = img;
                 break;
         } 
-
         return element;
     },
     createArray : (amount, type, width, height, img, labelType) => {
