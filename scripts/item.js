@@ -13,7 +13,7 @@ const item = {
     ,
     rePrepareToSpawn : (element, heightElement) => {
         element.classList.add(clase.esconder);
-        element.style.top = negativeValue(heightElement) + px;
+        element.style.top = negativeValue(heightElement) + px;    
     },
     collisionWithShip : (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
         const yPosNave = parseFloat(nave.style.top.split(px)[0]);
@@ -108,6 +108,14 @@ const item = {
                 element.appendChild(bodyElement);
                 element.appendChild(lifeContainer);
                 break;
+            case clase.aliado:
+                element.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
+                element.style.backgroundPosition = 'center';
+                element.style.backgroundRepeat = 'no-repeat';
+                element.style.backgroundImage = img;
+
+                element.setAttribute(attribute.dataCaught, false);
+                break;
             default:
                 element.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
                 element.style.backgroundPosition = 'center';
@@ -128,7 +136,7 @@ const item = {
     
             switch (type) {
                 case clase.aliado:
-                    items[i].classList.add(item.ally.chooseAllyPowers(img[posImg]));
+                    items[i].classList.add(item.ally.choosePower(img[posImg]));
                     break;
             }
             if (img.length > 1) posImg = posImg < img.length - 1 ? posImg + 1 : 0;
@@ -140,9 +148,12 @@ const item = {
     },
     ally : {
         points : 25,
-        chooseAllyPowers : (urlImg) => 
+        choosePower : (urlImg) => 
         {
             return Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "")
+        },
+        chooseImagePower : () => {
+                //aaaaaaaaaaaaaaaaaaaaaaaaah
         },
         reassignRole : (element, images) => {
             const rnd = Math.floor(Math.random() * images.length);
@@ -152,11 +163,11 @@ const item = {
                 if (i == rnd) chosedImage = image;
             });
             //Le quito la clase que determinaba el tipo de aliado que era hasta ahora.
-            element.classList.remove(item.ally.chooseAllyPowers(element.style.backgroundImage));
+            element.classList.remove(item.ally.choosePower(element.style.backgroundImage));
             //Cambio su imagen.
             element.style.backgroundImage = chosedImage;
             //Y finalmente reasigno su nuevo poder según su nueva imagen.
-            element.classList.add(item.ally.chooseAllyPowers(chosedImage), clase.aliado);
+            element.classList.add(item.ally.choosePower(chosedImage), clase.aliado);
         },
         rebootRateOfFireShoot : (ship, projectiles) => {
             if (time.betweenShots - poder.cadencia > poder.max.cadencia) {
@@ -191,23 +202,35 @@ const item = {
             let yPos = 0;
             let xPos = 0;
             let currentPoints;
+            let caught = false;
             allys.forEach(ally => {
                 if (!ally.classList.contains(clase.esconder)) {
-                    yPos = parseInt(ally.style.top.split(px)[0]);
-                    xPos = parseFloat(ally.style.left.split(px)[0]);
-                    ally.style.top = yPos + speed.friends + px;
-        
-                    if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
-                        item.rePrepareToSpawn(ally, tamano.aliado.alto);
-                        item.ally.increaseStats(ally, ship, projectiles, life);
-                        item.ally.reassignRole(ally, imagenes.aliados);
+                    caught = ally.getAttribute(attribute.dataCaught);
+                    
+                    //Si el aliado aún no ha sido pillado por el jugador...
+                    if (caught == 'false') {
 
-                        const pointsMenu = document.querySelector('.' + clase.points);
-                        currentPoints = parseInt(pointsMenu.textContent.trim());
-                        pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
-                    } else if (item.checkLimit(yPos)) {
-                        item.ally.reassignRole(ally, imagenes.aliados);
-                        item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                        yPos = parseInt(ally.style.top.split(px)[0]);
+                        xPos = parseFloat(ally.style.left.split(px)[0]);
+                        ally.style.top = yPos + speed.friends + px;
+
+                        if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
+
+                            ally.setAttribute(attribute.dataCaught, true);
+                            setTimeout(() => {
+                                item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                                item.ally.increaseStats(ally, ship, projectiles, life);
+                                item.ally.reassignRole(ally, imagenes.aliados);
+        
+                                const pointsMenu = document.querySelector('.' + clase.points);
+                                currentPoints = parseInt(pointsMenu.textContent.trim());
+                                pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
+                                ally.setAttribute(attribute.dataCaught, false);
+                            }, time.showingPowerUp);  
+                        } else if (item.checkLimit(yPos)) {
+                            item.ally.reassignRole(ally, imagenes.aliados);
+                            item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                        }
                     }
                 }
             });

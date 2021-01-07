@@ -21,7 +21,7 @@ const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     });
 }
 
-const main = (nave, vida, pointsMenu) => {
+const main = (nave, vida) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = tamano.ventana.alto * 0.01;
 
@@ -46,9 +46,10 @@ const main = (nave, vida, pointsMenu) => {
 
     rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
+    
+    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
 }
 

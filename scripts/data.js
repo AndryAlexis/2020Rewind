@@ -93,10 +93,10 @@ const nombre = {
         koala : 'koala'
     }, 
     powerUp : {
-        fireOfRate : 'fireOfRate',
+        cadence : 'cadence',
         heal : 'heal',
-        otro : 'otro',
-        parentesis : 'parentesis'
+        velocity : 'velocity',
+        damage : 'parentesis1'
     }
 }
 
@@ -114,16 +114,18 @@ const imagenes = {
         urlFriends + nombre.aliado.koala + png
     ],
     powerUps : [
-        urlPowerUps + nombre.powerUp.fireOfRate + png,
+        urlPowerUps + nombre.powerUp.cadence + png,
         urlPowerUps + nombre.powerUp.heal + png,
-        urlPowerUps + nombre.powerUp.otro + png,
-        urlPowerUps + nombre.powerUp.parentesis + png
+        urlPowerUps + nombre.powerUp.velocity + png,
+        urlPowerUps + nombre.powerUp.damage + png
     ]
 }
 
 const attribute = {
     dataLife : 'data-currentLife',
-    dataMaxLife : 'data-currentMaxLife'
+    dataMaxLife : 'data-currentMaxLife',
+    dataPowerUp : 'data-power-up',
+    dataCaught : 'data-caught'
 }
 
 const clase = {
@@ -137,6 +139,7 @@ const clase = {
     vida : 'vida',
     menu : 'menu',
     points : 'points',
+    powerUp : 'powerUp'
 }
 
 const poder = {

@@ -89,10 +89,3 @@ npc.points = 50
 npc.life = 100
 npc.maxLife = 100
 npc.takeDamage = () => { }
-
-
-console.log(entity)
-console.log(object)
-console.log(npc)
-
-npc.despawn();
