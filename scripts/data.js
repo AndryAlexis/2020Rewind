@@ -89,8 +89,8 @@ const nombre = {
     aliado : {
         gt : 'gt',
         mascarilla : 'mascarilla',
-        poqvnw : 'poqvnw',
-        koala : 'koala'
+        koala : 'koala',
+        poqvnw : 'poqvnw'
     }, 
     powerUp : {
         cadence : 'cadence',

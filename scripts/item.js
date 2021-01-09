@@ -220,6 +220,7 @@ const item = {
             let xPos = 0;
             let currentPoints;
             let caught = false;
+            let curImg;
             allys.forEach(ally => {
                 if (!ally.classList.contains(clase.esconder)) {
                     caught = ally.getAttribute(attribute.dataCaught);
@@ -234,10 +235,15 @@ const item = {
                         if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
                             ally.setAttribute(attribute.dataCaught, true);
                             item.ally.increaseStats(ally, ship, projectiles, life);
+
+                            //Creo una copia de la imagen actual del aliado.
+                            curImg = Object.create({bg : ally.style.backgroundImage});
+                            
                             ally.style.backgroundImage = ally.getAttribute(attribute.dataPowerUp);
 
                             setTimeout(() => {
                                 item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                                ally.style.backgroundImage = curImg.bg;
                                 item.ally.assignRole(ally, imagenes.aliados);
         
                                 const pointsMenu = document.querySelector('.' + clase.points);
