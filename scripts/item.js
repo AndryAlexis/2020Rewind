@@ -115,6 +115,9 @@ const item = {
                 element.style.backgroundImage = img;
 
                 element.setAttribute(attribute.dataCaught, false);
+                
+                item.ally.assignRole(element, imagenes.aliados);
+
                 break;
             default:
                 element.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
@@ -133,12 +136,6 @@ const item = {
         for (let i = 0; i < amount; i++) {
             items[i] = item.create(type, width, height, img[posImg], labelType);
             body.appendChild(items[i]);
-    
-            switch (type) {
-                case clase.aliado:
-                    items[i].classList.add(item.ally.choosePower(img[posImg]));
-                    break;
-            }
             if (img.length > 1) posImg = posImg < img.length - 1 ? posImg + 1 : 0;
         }
         return items;
@@ -148,28 +145,48 @@ const item = {
     },
     ally : {
         points : 25,
-        choosePower : (urlImg) => 
+        chooseAllyType : (urlImg) => 
         {
-            return Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "")
+            return Object.values(nombre.aliado).filter(nombreAliado => urlImg.includes(nombreAliado) ? nombreAliado : "")[0];
         },
-        chooseImagePower : () => {
-                //aaaaaaaaaaaaaaaaaaaaaaaaah
+        chooseImagePower : (chosedPowerUP) => {  
+            let chosedImage = "";        
+            switch (chosedPowerUP) {
+                case nombre.aliado.gt:
+                    chosedImage = nombre.powerUp.cadence;
+                    break;
+                case nombre.aliado.mascarilla:
+                    chosedImage = nombre.powerUp.heal;
+                    break;
+                case nombre.aliado.poqvnw:
+                    chosedImage = nombre.powerUp.damage;
+                    break;
+                case nombre.aliado.koala:
+                    chosedImage = nombre.powerUp.velocity;
+                    break;
+            }
+            chosedImage = imagenes.powerUps.filter(powerUp => powerUp.includes(chosedImage) ? powerUp : "");
+            return chosedImage[0];
         },
-        reassignRole : (element, images) => {
+        assignRole : (element, images) => {
             const rnd = Math.floor(Math.random() * images.length);
+            let chosedAllyType;
         
             let chosedImage = null;
             images.forEach((image, i) => {
                 if (i == rnd) chosedImage = image;
             });
             //Le quito la clase que determinaba el tipo de aliado que era hasta ahora.
-            element.classList.remove(item.ally.choosePower(element.style.backgroundImage));
+            element.classList.remove(item.ally.chooseAllyType(element.style.backgroundImage));
             //Cambio su imagen.
             element.style.backgroundImage = chosedImage;
-            //Y finalmente reasigno su nuevo poder según su nueva imagen.
-            element.classList.add(item.ally.choosePower(chosedImage), clase.aliado);
+            //Reasigno su nuevo poder según su nueva imagen.
+            chosedAllyType = item.ally.chooseAllyType(chosedImage);
+            element.classList.add(chosedAllyType, clase.aliado);
+            //Y finalmente le agrego la imagen correspondiente a su actual power up.
+            element.setAttribute(attribute.dataPowerUp, item.ally.chooseImagePower(chosedAllyType));
         },
-        rebootRateOfFireShoot : (ship, projectiles) => {
+        rebootCadence : (ship, projectiles) => {
             if (time.betweenShots - poder.cadencia > poder.max.cadencia) {
                 time.betweenShots -= poder.cadencia;
             } else {
@@ -188,7 +205,7 @@ const item = {
         },
         increaseStats : (ally, ship, projectiles, life) => {
             if (ally.classList.contains(nombre.aliado.gt)) {
-                item.ally.rebootRateOfFireShoot(ship, projectiles);
+                item.ally.rebootCadence(ship, projectiles);
             } else if (ally.classList.contains(nombre.aliado.mascarilla)) {
                 item.ally.heal(life);
             } else if (ally.classList.contains(nombre.aliado.poqvnw)) {
@@ -215,20 +232,22 @@ const item = {
                         ally.style.top = yPos + speed.friends + px;
 
                         if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
-
                             ally.setAttribute(attribute.dataCaught, true);
+                            item.ally.increaseStats(ally, ship, projectiles, life);
+                            ally.style.backgroundImage = ally.getAttribute(attribute.dataPowerUp);
+
                             setTimeout(() => {
                                 item.rePrepareToSpawn(ally, tamano.aliado.alto);
-                                item.ally.increaseStats(ally, ship, projectiles, life);
-                                item.ally.reassignRole(ally, imagenes.aliados);
+                                item.ally.assignRole(ally, imagenes.aliados);
         
                                 const pointsMenu = document.querySelector('.' + clase.points);
                                 currentPoints = parseInt(pointsMenu.textContent.trim());
                                 pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
                                 ally.setAttribute(attribute.dataCaught, false);
                             }, time.showingPowerUp);  
+
                         } else if (item.checkLimit(yPos)) {
-                            item.ally.reassignRole(ally, imagenes.aliados);
+                            item.ally.assignRole(ally, imagenes.aliados);
                             item.rePrepareToSpawn(ally, tamano.aliado.alto);
                         }
                     }
