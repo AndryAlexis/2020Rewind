@@ -39,6 +39,7 @@ const speed = {
         starts : 1
     }
 }
+
 //Máximo 1.0
 const damage = {
     projectile : 50, 
@@ -96,7 +97,7 @@ const nombre = {
         cadence : 'cadence',
         heal : 'heal',
         velocity : 'velocity',
-        damage : 'parentesis1'
+        damage : 'damage'
     }
 }
 

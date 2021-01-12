@@ -209,8 +209,9 @@ const item = {
             } else if (ally.classList.contains(nombre.aliado.mascarilla)) {
                 item.ally.heal(life);
             } else if (ally.classList.contains(nombre.aliado.poqvnw)) {
-                damage.projectile += damage.projectile < 1 ? poder.dano : 0;
+                damage.projectile += poder.dano;
                 damage.projectile = Math.round(damage.projectile * 10) / 10;
+                console.log(damage.projectile);
             } else if (ally.classList.contains(nombre.aliado.koala)) {
                 speed.projectile += poder.velocidadDisparo;
             }
@@ -237,7 +238,7 @@ const item = {
                             item.ally.increaseStats(ally, ship, projectiles, life);
 
                             //Creo una copia de la imagen actual del aliado.
-                            curImg = Object.create({bg : ally.style.backgroundImage});
+                            curImg = Object.assign({}, {bg : ally.style.backgroundImage});
                             
                             ally.style.backgroundImage = ally.getAttribute(attribute.dataPowerUp);
 
