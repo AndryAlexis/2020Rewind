@@ -211,7 +211,6 @@ const item = {
             } else if (ally.classList.contains(nombre.aliado.poqvnw)) {
                 damage.projectile += poder.dano;
                 damage.projectile = Math.round(damage.projectile * 10) / 10;
-                console.log(damage.projectile);
             } else if (ally.classList.contains(nombre.aliado.koala)) {
                 speed.projectile += poder.velocidadDisparo;
             }
@@ -370,8 +369,7 @@ const item = {
                         life.style.width = currentLife + percentage;
         
                         if (currentLife <= 0) {
-                            alert('Has morido fuertemente.');
-                            life.style.width = oneHundred + percentage;
+                            item.ship.toDie(life);
                         } 
                     }
                 }
@@ -420,6 +418,12 @@ const item = {
         }
     },
     ship : {
+        isDeath : false,
+        toDie : (life) => {
+            alert('Has morido fuertemente.');
+            life.style.width = oneHundred + percentage;
+            item.ship.isDeath = true;
+        },
         shoot : (ship, projectiles) => {
             let xPosShip = 0;
             let yPosShip = 0;

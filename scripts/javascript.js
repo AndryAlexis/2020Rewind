@@ -32,7 +32,9 @@ const main = (nave, vida) => {
         document.addEventListener(usedEvent.touchstart, (event) => item.ship.movil.move(event, nave));
     } else {
         //Movimiento de la nave si se hace desde un ordenador.
-        document.addEventListener(usedEvent.mousemove, (event) => item.ship.computer.move(event, nave));
+        document.addEventListener(usedEvent.mousemove, (event) => {
+            if (!item.ship.isDeath) item.ship.computer.move(event, nave)
+        });
     }
 
     const proyectiles = item.createArray(amount.projectiles, clase.proyectil, tamano.proyectil.ancho, tamano.proyectil.alto, [imagenes.proyectiles], label.div);
