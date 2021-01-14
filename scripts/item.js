@@ -140,9 +140,8 @@ const item = {
         }
         return items;
     },
-    rearrange : (items) => {
-        return items.sort(() => Math.random() - 0.5)
-    },
+    rearrange : (items) => items.sort(() => Math.random() - 0.5)
+    ,
     ally : {
         points : 25,
         chooseAllyType : (urlImg) => 
@@ -332,7 +331,7 @@ const item = {
         },
     },
     enemy : {
-        maxLife : 100,
+        maxLife : 170,
         points : 75,
         die : (enemy, lifeBar) => {
             const pointsMenu = document.querySelector('.' + clase.points);
@@ -344,9 +343,10 @@ const item = {
             lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
             lifeBar.style.width = oneHundred + percentage;
         },
-        takeDamage : (enemy, lifeBar, currentLife, currentMaxLife) => {
+        takeDamage : (enemy, lifeBar, currentLife, currentMaxLife) => {      
             currentLife -= damage.projectile;
             lifeBar.style.width = currentLife / currentMaxLife * oneHundred + percentage;
+            console.log(lifeBar.style.width);
             lifeBar.setAttribute(attribute.dataLife, currentLife);
 
             if (currentLife <= 0) item.enemy.die(enemy, lifeBar);
@@ -372,9 +372,19 @@ const item = {
                             item.ship.toDie(life);
                         } 
                     }
+
+                    if (item.checkLimit(yPos)) {
+                        lifeBar = enemy.lastChild.lastChild;
+                        lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
+                        lifeBar.style.width = oneHundred + percentage;
+                    }
                 }
             });
-        }
+        },
+        increaseLife : () => {
+            item.enemy.maxLife += 100;
+            console.log("Max life enemy: " + item.enemy.maxLife);
+        },
     },
     starts : {
         move : (starts) => {
@@ -488,7 +498,7 @@ const item = {
             }
         }
     },
-    spawn : (items, probability) => {
+    spawn : (elements, probability) => {
         const num = Math.floor(Math.random() * oneHundred) + 1;
 
         if (num <= probability) {
@@ -499,13 +509,17 @@ const item = {
                 }
             }   
             let spawned = false;
-            items.forEach(item => {
+            elements.forEach(element => {
                 if (!spawned) {
-                    const enemigoEscondido = item.classList.contains(clase.esconder);
-                    if (enemigoEscondido) {
+                    const hidden = element.classList.contains(clase.esconder);
+                    if (hidden) {
+                        if (element.classList.contains(clase.enemigo)) {
+                            element.setAttribute(attribute.dataMaxLife, item.enemy.maxLife);
+                            element.setAttribute(attribute.currentLife, item.enemy.maxLife);
+                        }
                         const xAleatoria = Math.floor(Math.random() * (limit.x.max - limit.x.min));
-                        item.classList.remove(clase.esconder);
-                        item.style.left = xAleatoria + px;
+                        element.classList.remove(clase.esconder);
+                        element.style.left = xAleatoria + px;
                         spawned = true;
                     }
                 }
