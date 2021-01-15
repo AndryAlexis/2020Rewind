@@ -331,25 +331,21 @@ const item = {
         },
     },
     enemy : {
-        maxLife : 170,
+        maxLife : 100,
         points : 75,
-        die : (enemy, lifeBar) => {
+        die : (enemy) => {
             const pointsMenu = document.querySelector('.' + clase.points);
             const currentPoints = parseInt(pointsMenu.textContent.trim());
             pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
 
             item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
-
-            lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
-            lifeBar.style.width = oneHundred + percentage;
         },
         takeDamage : (enemy, lifeBar, currentLife, currentMaxLife) => {      
             currentLife -= damage.projectile;
             lifeBar.style.width = currentLife / currentMaxLife * oneHundred + percentage;
-            console.log(lifeBar.style.width);
             lifeBar.setAttribute(attribute.dataLife, currentLife);
 
-            if (currentLife <= 0) item.enemy.die(enemy, lifeBar);
+            if (currentLife <= 0) item.enemy.die(enemy);
         },
         move : (enemies, ship, life) => {
             let yPos = 0;
@@ -368,9 +364,7 @@ const item = {
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
                         life.style.width = currentLife + percentage;
         
-                        if (currentLife <= 0) {
-                            item.ship.toDie(life);
-                        } 
+                        if (currentLife <= 0) item.ship.toDie(life);
                     }
 
                     if (item.checkLimit(yPos)) {
@@ -382,7 +376,7 @@ const item = {
             });
         },
         increaseLife : () => {
-            item.enemy.maxLife += 100;
+            item.enemy.maxLife += 50;
             console.log("Max life enemy: " + item.enemy.maxLife);
         },
     },
@@ -422,9 +416,7 @@ const item = {
             speedStartsEvent = setInterval(_ => item.starts.move(starts), time.movement.starts);
         
             //Cuando la velocidad de las estrellas llegue a su máximo, se dejará de ejecutar la función changeSpeedStarts.
-            if (speed.starts >= speed.max.starts) {
-                eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
-            }
+            if (speed.starts >= speed.max.starts) eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
         }
     },
     ship : {
@@ -514,8 +506,10 @@ const item = {
                     const hidden = element.classList.contains(clase.esconder);
                     if (hidden) {
                         if (element.classList.contains(clase.enemigo)) {
-                            element.setAttribute(attribute.dataMaxLife, item.enemy.maxLife);
-                            element.setAttribute(attribute.currentLife, item.enemy.maxLife);
+                            const lifeBar = element.lastChild.lastChild;
+                            lifeBar.setAttribute(attribute.dataMaxLife, item.enemy.maxLife);
+                            lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
+                            lifeBar.style.width = oneHundred + percentage;
                         }
                         const xAleatoria = Math.floor(Math.random() * (limit.x.max - limit.x.min));
                         element.classList.remove(clase.esconder);

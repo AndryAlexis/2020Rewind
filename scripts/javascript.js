@@ -53,7 +53,7 @@ const main = (nave, vida) => {
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
-    //setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
+    setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
 }
 
 window.addEventListener(usedEvent.load, _ => {
