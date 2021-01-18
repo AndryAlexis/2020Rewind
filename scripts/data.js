@@ -62,18 +62,18 @@ const time = {
     betweenShots : 2000,
     spawn : {
         enemies : 5000,
-        friends : 30000
+        friends : 15000
     },
     countdown : 2350,
     startGame : 2500,
     changeSpeedStarts : 15000,
     showingPowerUp : 1500,
-    changeEnemyLife : 30000
+    changeEnemyLife : 60000
 }
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
-    friends : 50,
-    enemies : 100
+    friends : 90,
+    enemies : 95
 }
 
 const urlImages = 'url(./img/';
