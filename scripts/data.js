@@ -139,7 +139,8 @@ const clase = {
     nave : 'nave',
     aliado : 'aliado',
     vida : 'vida',
-    menu : 'menu',
+    countDownMenu : 'countDownMenu',
+    loseMenu : 'loseMenu',
     points : 'points',
     powerUp : 'powerUp'
 }
@@ -177,9 +178,13 @@ const tamano = {
         ancho : 0,
         alto : 0
     },
-    menu : { 
+    countDownMenu : { 
         ancho : 300,
         alto : 400
+    },
+    loseMenu : {
+      width : 500,
+      height : 600  
     },
     movil : {
         nave : {

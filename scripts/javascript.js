@@ -65,35 +65,38 @@ window.addEventListener(usedEvent.load, _ => {
     const vida = document.querySelector('.' + clase.vida);
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
 
-    const menu = document.querySelector('.' + clase.menu + ' ' + label.div);
-    const marginTopMenu = halfValue(tamano.ventana.alto) - halfValue(tamano.menu.alto);
+    const countDownMenu = document.querySelector('.' + clase.countDownMenu + ' ' + label.div);
+    const loseMenu = document.querySelector('.' + clase.loseMenu + ' ' + label.div);
 
     if (onMovil()) {
         const ancho = tamano.ventana.ancho * tamano.movil.menu.ancho;
         const alto = ancho * 1.2;
-        menu.style.width = ancho + px;
-        menu.style.height = alto + px;
-        menu.style.position = 'absolute';
-        menu.style.top = halfValue(tamano.ventana.alto) - halfValue(alto);
-        menu.style.left = halfValue(tamano.ventana.ancho) - halfValue(ancho);
+
+        countDownMenu.style.width = ancho + px;
+        countDownMenu.style.height = alto + px;
+        countDownMenu.style.position = 'absolute';
+        countDownMenu.style.top = halfValue(tamano.ventana.alto) - halfValue(alto);
+        countDownMenu.style.left = halfValue(tamano.ventana.ancho) - halfValue(ancho);
 
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
         tamano.nave.alto = tamano.nave.ancho * 1.2;
 
         alert('Versión de móvil');   
     } else {
-        menu.style.width = tamano.menu.ancho + px;
-        menu.style.height = tamano.menu.alto + px;
+        countDownMenu.style.width = tamano.countDownMenu.ancho + px;
+        countDownMenu.style.height = tamano.countDownMenu.alto + px;
+
+        loseMenu.style.width = tamano.loseMenu.ancho + px;
+        loseMenu.style.height = tamano.loseMenu.alto + px;
     }
 
     iniciarParametros(nave, estrellas, tamano.nave.ancho, tamano.nave.alto, vida.childNodes[1]);
 
-    menu.style.marginTop = marginTopMenu + px;
-    document.querySelector('.' + clase.menu + ' ' + label.div + ' ' + label.img).src = './gif/countdown.gif';
+    document.querySelector('.' + clase.countDownMenu + ' ' + label.div + ' ' + label.img).src = './gif/countdown.gif';
     setTimeout(() =>  {
         
-        document.querySelector('.' + clase.menu).style.display = none;
-        menu.style.display = none;
+        document.querySelector('.' + clase.countDownMenu).style.display = none;
+        countDownMenu.style.display = none;
         nave.style.display = 'block';
         vida.style.display = 'block';
 
