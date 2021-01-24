@@ -72,11 +72,11 @@ window.addEventListener(usedEvent.load, _ => {
         const ancho = tamano.ventana.ancho * tamano.movil.menu.ancho;
         const alto = ancho * 1.2;
 
-        countDownMenu.style.width = ancho + px;
-        countDownMenu.style.height = alto + px;
-        countDownMenu.style.position = 'absolute';
-        countDownMenu.style.top = halfValue(tamano.ventana.alto) - halfValue(alto);
-        countDownMenu.style.left = halfValue(tamano.ventana.ancho) - halfValue(ancho);
+        // countDownMenu.style.width = ancho + px;
+        // countDownMenu.style.height = alto + px;
+        // countDownMenu.style.position = 'absolute';
+        // countDownMenu.style.top = halfValue(tamano.ventana.alto) - halfValue(alto);
+        // countDownMenu.style.left = halfValue(tamano.ventana.ancho) - halfValue(ancho);
 
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
         tamano.nave.alto = tamano.nave.ancho * 1.2;
