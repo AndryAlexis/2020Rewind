@@ -83,11 +83,11 @@ window.addEventListener(usedEvent.load, _ => {
 
         alert('Versión de móvil');   
     } else {
-        countDownMenu.style.width = tamano.countDownMenu.ancho + px;
-        countDownMenu.style.height = tamano.countDownMenu.alto + px;
+    //     countDownMenu.style.width = tamano.countDownMenu.ancho + px;
+    //     countDownMenu.style.height = tamano.countDownMenu.alto + px;
 
-        loseMenu.style.width = tamano.loseMenu.ancho + px;
-        loseMenu.style.height = tamano.loseMenu.alto + px;
+    //     loseMenu.style.width = tamano.loseMenu.ancho + px;
+    //     loseMenu.style.height = tamano.loseMenu.alto + px;
     }
 
     iniciarParametros(nave, estrellas, tamano.nave.ancho, tamano.nave.alto, vida.childNodes[1]);
