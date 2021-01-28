@@ -67,27 +67,11 @@ window.addEventListener(usedEvent.load, _ => {
 
     const countDownMenu = document.querySelector('.' + clase.countDownMenu + ' ' + label.div);
     const loseMenu = document.querySelector('.' + clase.loseMenu);
+    //loseMenu.style.display = 'none';
 
     if (onMovil()) {
-        const ancho = tamano.ventana.ancho * tamano.movil.menu.ancho;
-        const alto = ancho * 1.2;
-
-        // countDownMenu.style.width = ancho + px;
-        // countDownMenu.style.height = alto + px;
-        // countDownMenu.style.position = 'absolute';
-        // countDownMenu.style.top = halfValue(tamano.ventana.alto) - halfValue(alto);
-        // countDownMenu.style.left = halfValue(tamano.ventana.ancho) - halfValue(ancho);
-
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
         tamano.nave.alto = tamano.nave.ancho * 1.2;
-
-        alert('Versión de móvil');   
-    } else {
-    //     countDownMenu.style.width = tamano.countDownMenu.ancho + px;
-    //     countDownMenu.style.height = tamano.countDownMenu.alto + px;
-
-    //     loseMenu.style.width = tamano.loseMenu.ancho + px;
-    //     loseMenu.style.height = tamano.loseMenu.alto + px;
     }
 
     iniciarParametros(nave, estrellas, tamano.nave.ancho, tamano.nave.alto, vida.childNodes[1]);

@@ -422,9 +422,11 @@ const item = {
     ship : {
         isDeath : false,
         toDie : (life) => {
-            alert('Has morido fuertemente.');
-            life.style.width = oneHundred + percentage;
+            //life.style.width = oneHundred + percentage;
             item.ship.isDeath = true;
+            const loseMenu = document.querySelector('.' + clase.loseMenu);
+            loseMenu.classList.toggle(clase.esconder);
+            loseMenu.style.display = 'flex';
         },
         shoot : (ship, projectiles) => {
             let xPosShip = 0;
