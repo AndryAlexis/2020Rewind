@@ -377,7 +377,6 @@ const item = {
         },
         increaseLife : () => {
             item.enemy.maxLife += 50;
-            console.log("Max life enemy: " + item.enemy.maxLife);
         },
     },
     starts : {
@@ -422,11 +421,19 @@ const item = {
     ship : {
         isDeath : false,
         toDie : (life) => {
+            const loseMenu = document.querySelector('.' + clase.loseMenu);
+            const totalPoints = document.querySelector('.' + clase.totalPoints);
+            const ship = document.querySelector('.' + clase.nave);
+            const currentPoints = document.querySelector('.' + clase.points);
+             
             //life.style.width = oneHundred + percentage;
             item.ship.isDeath = true;
-            const loseMenu = document.querySelector('.' + clase.loseMenu);
             loseMenu.classList.toggle(clase.esconder);
             loseMenu.style.display = 'flex';
+
+            totalPoints.textContent = parseInt(currentPoints.textContent) + ' puntos';
+
+            ship.style.display = 'none';
         },
         shoot : (ship, projectiles) => {
             let xPosShip = 0;

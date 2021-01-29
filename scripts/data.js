@@ -27,7 +27,7 @@ const usedEvent = {
     mousemove : 'mousemove'
 }
 
-const speed = {
+let speed = {
     projectile : 1,
     starts : 1,
     enemies : 2,
@@ -40,10 +40,15 @@ const speed = {
     }
 }
 
+const initSpeed = Object.create(speed);
+speed = initSpeed;
+
+console.log(speed);
+
 //Máximo 1.0
 const damage = {
     projectile : 50, 
-    enemy : 0.1
+    enemy : 1 // TO DO CHANGE TO 0.1
 }
 
 const label = {
@@ -142,7 +147,8 @@ const clase = {
     countDownMenu : 'countDownMenu',
     loseMenu : 'loseMenu',
     points : 'points',
-    powerUp : 'powerUp'
+    powerUp : 'powerUp',
+    totalPoints : 'totalPoints'
 }
 
 const poder = {

@@ -89,6 +89,10 @@ window.addEventListener(usedEvent.load, _ => {
     setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+
+    document.querySelector('button').addEventListener('click', () => {
+        alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
+    });
 });
 
 window.onresize = () => {
