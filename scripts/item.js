@@ -4,7 +4,12 @@ const orden = {
 }
 
 let rateOfFireEvent = null;
+let spawnEnemyEvent = null;
+let spawnAllyEvent = null;
 let speedShootEvent = null;
+let speedEnemyEvent = null;
+let speedAllyEvent = null;
+let eventChangeSpeedStarts = null;
 
 const item = {
     zeroFill : (num, max) => num.toString().length < max ? item.zeroFill('0' + num, max) : num
@@ -235,6 +240,10 @@ const item = {
                             ally.setAttribute(attribute.dataCaught, true);
                             item.ally.increaseStats(ally, ship, projectiles, life);
 
+                            const pointsMenu = document.querySelector('.' + clase.points);
+                            currentPoints = parseInt(pointsMenu.textContent.trim());
+                            pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
+
                             //Creo una copia de la imagen actual del aliado.
                             curImg = Object.assign({}, {bg : ally.style.backgroundImage});
                             
@@ -245,9 +254,6 @@ const item = {
                                 ally.style.backgroundImage = curImg.bg;
                                 item.ally.assignRole(ally, imagenes.aliados);
         
-                                const pointsMenu = document.querySelector('.' + clase.points);
-                                currentPoints = parseInt(pointsMenu.textContent.trim());
-                                pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
                                 ally.setAttribute(attribute.dataCaught, false);
                             }, time.showingPowerUp);  
 
@@ -423,7 +429,6 @@ const item = {
         toDie : (life) => {
             const loseMenu = document.querySelector('.' + clase.loseMenu);
             const totalPoints = document.querySelector('.' + clase.totalPoints);
-            const ship = document.querySelector('.' + clase.nave);
             const currentPoints = document.querySelector('.' + clase.points);
              
             //life.style.width = oneHundred + percentage;
@@ -433,7 +438,14 @@ const item = {
 
             totalPoints.textContent = parseInt(currentPoints.textContent) + ' puntos';
 
-            ship.style.display = 'none';
+            speedShootEvent = clearInterval(speedShootEvent);
+            speedEnemyEvent = clearInterval(speedEnemyEvent);
+            speedAllyEvent = clearInterval(speedAllyEvent);
+            rateOfFireEvent = clearInterval(rateOfFireEvent);
+            spawnAllyEvent = clearInterval(spawnAllyEvent);
+            spawnEnemyEvent = clearInterval(spawnEnemyEvent);
+            eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
+            speedStartsEvent  = clearInterval(speedStartsEvent);
         },
         shoot : (ship, projectiles) => {
             let xPosShip = 0;
