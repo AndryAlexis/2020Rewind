@@ -18,6 +18,7 @@ body {
 .container {
     width: 100vw;
     height: 90vh;
+    background-color: green;
     overflow: hidden;
 }
 
