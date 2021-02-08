@@ -48,42 +48,17 @@ const main = (nave, vida) => {
 
     //rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     speedAllyEvent = setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     //spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     //spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
-=======
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
+
     setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
-=======
->>>>>>> parent of 9eb5e52... Avance menú muerte
+
     setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
 }
 
