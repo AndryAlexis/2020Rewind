@@ -102,7 +102,7 @@ window.addEventListener(usedEvent.load, _ => {
     })
     */
 
-   document.getElementsByTagName("html")[0].style.overflow = "hidden";
+   //document.getElementsByTagName("html")[0].style.overflow = "hidden";
 });
 
 window.onresize = () => {
