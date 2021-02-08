@@ -104,9 +104,17 @@ body {
     transition: all 0.2s;
 }
 
+.allStarts {
+    width: 100vw;
+    height: 95vh;
+    background-color: rgba(0, 0, 255, 0.151);
+
+    overflow: hidden;
+}
+
 .estrellas {
     transition: all 0.2s;
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
 }
