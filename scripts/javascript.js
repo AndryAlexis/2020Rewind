@@ -1,4 +1,5 @@
 let speedStartsEvent = null;
+let shoteEvent = null;
 
 const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     nave.style.display = none;
@@ -53,11 +54,6 @@ const main = (nave, vida) => {
     spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
-
-    setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
-    setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
-    setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
-    setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
     setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
 }
 
@@ -71,8 +67,6 @@ window.addEventListener(usedEvent.load, _ => {
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
 
     const countDownMenu = document.querySelector('.' + clase.countDownMenu + ' ' + label.div);
-    const loseMenu = document.querySelector('.' + clase.loseMenu);
-    //loseMenu.style.display = 'none';
 
     if (onMovil()) {
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
@@ -82,6 +76,7 @@ window.addEventListener(usedEvent.load, _ => {
     iniciarParametros(nave, estrellas, tamano.nave.ancho, tamano.nave.alto, vida.childNodes[1]);
 
     document.querySelector('.' + clase.countDownMenu + ' ' + label.div + ' ' + label.img).src = './gif/countdown.gif';
+
     setTimeout(() =>  {
         
         document.querySelector('.' + clase.countDownMenu).style.display = none;
@@ -93,7 +88,7 @@ window.addEventListener(usedEvent.load, _ => {
 
     setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
-    let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+    eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 
     document.querySelector('button').addEventListener('click', () => {
         alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
