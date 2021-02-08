@@ -97,6 +97,7 @@ body {
 
 .proyectil {
     transition: all 0.1s;
+    position: relative;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }

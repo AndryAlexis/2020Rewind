@@ -79,7 +79,7 @@ const item = {
         element.style.height = height + px;
         element.style.top = negativeValue(width) + px;
         element.style.left = 0 + px;
-        element.style.position = 'absolute';
+        //element.style.position = 'absolute';
         element.classList.add(clase.esconder, type);
 
         switch (type) {
