@@ -93,6 +93,10 @@ window.addEventListener(usedEvent.load, _ => {
     document.querySelector('button').addEventListener('click', () => {
         alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
     });
+
+    window.addEventListener('scroll', () => {
+        window.scroll(0, 0);   
+    });
 });
 
 window.onresize = () => {
