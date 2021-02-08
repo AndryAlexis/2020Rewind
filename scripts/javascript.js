@@ -101,6 +101,8 @@ window.addEventListener(usedEvent.load, _ => {
         window.scrollTo(x, y);
     })
     */
+
+   document.getElementsByTagName("html")[0].style.overflow = "hidden";
 });
 
 window.onresize = () => {
