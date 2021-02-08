@@ -97,6 +97,7 @@ window.addEventListener(usedEvent.load, _ => {
     window.addEventListener('scroll', () => {
         const x = window.scrollX;
         const y = window.scrollY;
+        window.scrollTo(x, y);
     });
 });
 
