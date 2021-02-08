@@ -17,7 +17,7 @@ body {
 
 .container {
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
     overflow: hidden;
 }
 
@@ -120,7 +120,7 @@ body {
 
 .estrellas {
     transition: all 0.2s;
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
 }
