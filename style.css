@@ -12,6 +12,7 @@ body {
 }
 
 .container {
+    background-size: 100vw 100vh;
     overflow: hidden;
 }
 
