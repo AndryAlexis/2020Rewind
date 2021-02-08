@@ -100,6 +100,7 @@ window.addEventListener(usedEvent.load, _ => {
 
     window.addEventListener('scroll', disableScroll);
     window.removeEventListener('scroll', disableScroll);
+});
 
 window.onresize = () => {
     tamano.ventana.ancho = window.innerWidth;
