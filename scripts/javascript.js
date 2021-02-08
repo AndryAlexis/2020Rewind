@@ -43,9 +43,9 @@ const main = (nave, vida) => {
     const aliados = item.rearrange(item.createArray(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
 
     //Meto un enemigo nada más empezar.
-    item.spawn(enemigos, oneHundred);
+    //item.spawn(enemigos, oneHundred);
     //Y un aliado.
-    item.spawn(aliados, oneHundred);
+    //item.spawn(aliados, oneHundred);
 
     rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
