@@ -4,7 +4,6 @@ html {
 }
 
 body {
-    margin: auto;
     background-image: url(./img/fondoAzul.jpg);
     background-attachment: fixed;    
     background-repeat: no-repeat;
@@ -14,8 +13,6 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
-    overflow-y: hidden;
-    overflow-x: hidden;
     overflow: hidden;
 }
 
