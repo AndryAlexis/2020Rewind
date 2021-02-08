@@ -81,7 +81,7 @@ window.addEventListener(usedEvent.load, _ => {
         
         document.querySelector('.' + clase.countDownMenu).style.display = none;
         countDownMenu.style.display = none;
-        nave.style.display = 'block';
+        // nave.style.display = 'block';
         vida.style.display = 'block';
 
     }, time.countdown);
