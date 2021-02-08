@@ -5,7 +5,8 @@ body {
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
 
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .estrellas {
