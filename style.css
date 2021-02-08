@@ -11,6 +11,10 @@ body {
     background-size: 100vw 100vh;
 }
 
+.container {
+    overflow: hidden;
+}
+
 .estrellas {
     width: 100vw;
     height: 100vh;
