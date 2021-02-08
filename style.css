@@ -1,11 +1,14 @@
+html {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 body {
     margin: auto;
     background-image: url(./img/fondoAzul.jpg);
     background-attachment: fixed;    
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
-
-    overflow: hidden;
 }
 
 .estrellas {
