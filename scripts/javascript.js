@@ -86,7 +86,7 @@ window.addEventListener(usedEvent.load, _ => {
 
     }, time.countdown);
 
-    setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
+    //setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 
