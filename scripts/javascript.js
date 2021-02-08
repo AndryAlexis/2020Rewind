@@ -47,12 +47,12 @@ const main = (nave, vida) => {
     //Y un aliado.
     //item.spawn(aliados, oneHundred);
 
-    rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
+    //rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
     
     speedAllyEvent = setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
-    spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
-    spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
+    //spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
+    //spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
     setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
 }
