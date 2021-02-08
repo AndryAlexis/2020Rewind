@@ -94,10 +94,12 @@ window.addEventListener(usedEvent.load, _ => {
         alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
     });
 
-    window.addEventListener('scroll', () => {
-        window.scroll(0, 0);   
-    });
-});
+    const disableScroll = () => {
+        window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('scroll', disableScroll);
+    window.removeEventListener('scroll', disableScroll);
 
 window.onresize = () => {
     tamano.ventana.ancho = window.innerWidth;
