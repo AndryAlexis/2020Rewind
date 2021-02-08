@@ -8,12 +8,7 @@ html {
     overflow-x: hidden;
 }
 
-body {
-    background-image: url(./img/fondoAzul.jpg);
-    background-attachment: fixed;    
-    background-repeat: no-repeat;
-    background-size: 100vw 100vh;
-}
+
 
 .container {
     width: 100%;
