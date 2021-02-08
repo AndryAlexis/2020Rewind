@@ -17,8 +17,7 @@ body {
 
 .container {
     width: 100vw;
-    height: 97%;
-    background-color: green;
+    height: 98vh;
     overflow: hidden;
 }
 

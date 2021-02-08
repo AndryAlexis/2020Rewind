@@ -93,7 +93,6 @@ window.addEventListener(usedEvent.load, _ => {
     }, time.countdown);
 
     //setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
-    alert("99%");
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 
