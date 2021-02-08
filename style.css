@@ -17,8 +17,7 @@ body {
 
 .container {
     width: 100vw;
-    height: 98%;
-    overflow: hidden;
+    height: 100vh;
 }
 
 .estrellas {
@@ -28,7 +27,7 @@ body {
     background-image: url(./img/estrellas.png);
     background-position: center;
 
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 0px;
     
@@ -98,7 +97,7 @@ body {
 
 .proyectil {
     transition: all 0.1s;
-    position: relative;
+    position: absolute;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
@@ -107,7 +106,7 @@ body {
     width: 100px;
     height: 100px;
 
-    position: relative;
+    position: absolute;
     transition: all 0.2s;
 }
 
@@ -121,7 +120,7 @@ body {
 
 .estrellas {
     transition: all 0.2s;
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 0px;
 }
@@ -169,11 +168,8 @@ body {
     width: 100vw;
     height: 100vh;
 
-    background-color: rgba(0, 0, 0, 0.637);
+    position: absolute;
 
-    position: relative;
-
-    /* display: flex; */
     justify-content: center;
     align-items: center;
 

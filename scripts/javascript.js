@@ -42,23 +42,22 @@ const main = (nave, vida) => {
     const aliados = item.rearrange(item.createArray(amount.friends, clase.aliado, tamano.aliado.ancho, tamano.aliado.alto, imagenes.aliados, label.div));
 
     //Meto un enemigo nada más empezar.
-    //item.spawn(enemigos, oneHundred);
+    item.spawn(enemigos, oneHundred);
     //Y un aliado.
-    //item.spawn(aliados, oneHundred);
+    item.spawn(aliados, oneHundred);
 
-    //rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
+    rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
     speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
-
+    
     speedAllyEvent = setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
-    //spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
-    //spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
+    spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
+    spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
 
     setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
     setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
-
     setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
 }
 
@@ -87,12 +86,12 @@ window.addEventListener(usedEvent.load, _ => {
         
         document.querySelector('.' + clase.countDownMenu).style.display = none;
         countDownMenu.style.display = none;
-        //nave.style.display = 'block';
-        //vida.style.display = 'block';
+        nave.style.display = 'block';
+        vida.style.display = 'block';
 
     }, time.countdown);
 
-    //setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
+    setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     let eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 
