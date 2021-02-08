@@ -93,16 +93,6 @@ window.addEventListener(usedEvent.load, _ => {
     document.querySelector('button').addEventListener('click', () => {
         alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
     });
-
-    /*
-    window.addEventListener('scroll', () => {
-        const x = window.scrollX;
-        const y = window.scrollY;
-        window.scrollTo(x, y);
-    })
-    */
-
-   //document.getElementsByTagName("html")[0].style.overflow = "hidden";
 });
 
 window.onresize = () => {
