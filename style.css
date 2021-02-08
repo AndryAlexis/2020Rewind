@@ -17,7 +17,7 @@ body {
 
 .container {
     width: 100vw;
-    height: 95vh;
+    height: 94vh;
     overflow: hidden;
 }
 
@@ -69,9 +69,10 @@ body {
 
 .top-menu {
     width: 100%;
-    position: relative;
+    position: absolute;
     display: flex;
     margin-top: 1%;
+    z-index: 1;
 }
 
 .top-menu > div:first-of-type {
