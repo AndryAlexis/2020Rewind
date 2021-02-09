@@ -80,7 +80,7 @@ window.addEventListener(usedEvent.load, _ => {
     setTimeout(() =>  {
         
         document.querySelector('.' + clase.countDownMenu).style.display = none;
-        countDownMenu.style.display = none;
+        //countDownMenu.style.display = none;
         // nave.style.display = 'block';
         //vida.style.display = 'block';
 
