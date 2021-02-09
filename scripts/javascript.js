@@ -67,6 +67,9 @@ window.addEventListener(usedEvent.load, _ => {
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
 
     const countDownMenu = document.querySelector('.' + clase.countDownMenu + ' ' + label.div);
+    countDownMenu.style.display = 'none';
+    document.querySelector('.' + clase.countDownMenu).style.display = none;
+
 
     if (onMovil()) {
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
