@@ -43,8 +43,6 @@ let speed = {
 const initSpeed = Object.create(speed);
 speed = initSpeed;
 
-console.log(speed);
-
 //Máximo 1.0
 const damage = {
     projectile : 50, 

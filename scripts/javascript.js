@@ -67,9 +67,6 @@ window.addEventListener(usedEvent.load, _ => {
     const estrellas = document.querySelectorAll('.' + clase.estrellas);
 
     const countDownMenu = document.querySelector('.' + clase.countDownMenu + ' ' + label.div);
-    countDownMenu.style.display = 'none';
-    document.querySelector('.' + clase.countDownMenu).style.display = none;
-
 
     if (onMovil()) {
         tamano.nave.ancho = tamano.ventana.ancho * tamano.movil.nave.ancho;
@@ -82,14 +79,14 @@ window.addEventListener(usedEvent.load, _ => {
 
     setTimeout(() =>  {
         
-        //document.querySelector('.' + clase.countDownMenu).style.display = none;
-        //countDownMenu.style.display = none;
-        // nave.style.display = 'block';
-        //vida.style.display = 'block';
+        document.querySelector('.' + clase.countDownMenu).style.display = none;
+        countDownMenu.style.display = none;
+        nave.style.display = 'block';
+        vida.style.display = 'block';
 
     }, time.countdown);
 
-    //setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
+    setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
     speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 

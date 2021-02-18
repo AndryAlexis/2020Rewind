@@ -113,8 +113,8 @@ body {
 }
 
 .allStarts {
-    width: 95vw;
-    height: 85vh;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 255, 34, 0.138);
 
     overflow: hidden;
