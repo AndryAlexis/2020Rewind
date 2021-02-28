@@ -91,8 +91,33 @@ window.addEventListener(usedEvent.load, _ => {
     eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
 
     document.querySelector('button').addEventListener('click', () => {
-        alert("Hola, soy el botón de volver a jugar. Siento decirte que todavía no funciono xd");
+        //Recojo todos los enemigos visibles y los hago desaparecer.
+        const allEnemiesOnScreen = document.querySelectorAll('.' + clase.enemigo);
+        hideElements(allEnemiesOnScreen, tamano.enemigo.alto);
+
+        //Recojo todos los aliados visibles y también los hago desaparecer.
+        const allAlliesOnScreeen = document.querySelectorAll('.' + clase.aliado);
+        hideElements(allAlliesOnScreeen, tamano.aliado.alto);
+
+        //Reiniciar todas las velocidades.
+        speed.projectile = initSpeed.projectile;
+        speed.starts = initSpeed.starts;
+        speed.enemies = initSpeed.enemies;
+        speed.friends = initSpeed.friends;
+
+        console.log(speed);
+        //Reinicar todas las estadísticas de la nave.
+        //Reiniciar la puntuación.
+        //Rellenar la vida al máximo.
     });
+
+    const hideElements = (elements, heightElement) => {
+        elements.forEach(element => {
+            if (!element.classList.contains(clase.esconder)) {
+                item.rePrepareToSpawn(element, heightElement);
+            }
+        })
+    };
 });
 
 window.onresize = () => {

@@ -40,8 +40,9 @@ let speed = {
     }
 }
 
+console.log(speed);
+
 const initSpeed = Object.create(speed);
-speed = initSpeed;
 
 //Máximo 1.0
 const damage = {

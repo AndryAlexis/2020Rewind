@@ -363,7 +363,6 @@ const item = {
                     xPos = parseInt(enemy.style.left.split(px)[0]);
         
                     enemy.style.top = yPos + speed.enemies + px;
-                    console.log(enemy.style.top);
 
                     if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
                         item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
@@ -392,8 +391,6 @@ const item = {
             let top = 0;
             let alto = 0;
             let actualY = 0;
-
-            const withAllStartsContainer = document.querySelector('.allStarts');
         
             starts.forEach((estrella, i) => {
                 top = parseInt(estrella.style.top.split(px)[0]);
