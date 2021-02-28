@@ -40,14 +40,13 @@ let speed = {
     }
 }
 
-console.log(speed);
-
-const initSpeed = Object.create(speed);
+//Clono el objeto speed para poder reiniciar las velocidad si se intenta empezar otra partida.
+const initSpeed = Object.assign({}, speed);
 
 //Máximo 1.0
 const damage = {
     projectile : 50, 
-    enemy : 1 // TO DO CHANGE TO 0.1
+    enemy : 0.1
 }
 
 const label = {
@@ -74,6 +73,10 @@ const time = {
     showingPowerUp : 1500,
     changeEnemyLife : 60000
 }
+
+//Clono el objeto time para poder usarlo como reinicio de todos los tiempo.
+const initTime = Object.assign({}, time);
+
 //Es la probabilidad que tienen de aparecer cuando ha pasado su tiempo de spawn.
 const probability = {
     friends : 90,
@@ -134,15 +137,15 @@ const attribute = {
     dataCaught : 'data-caught'
 }
 
-const clase = {
-    esconder : 'esconder',
-    disparado : 'disparado',
-    proyectil : 'proyectil',
-    enemigo : 'enemigo',
-    estrellas : 'estrellas',
-    nave : 'nave',
-    aliado : 'aliado',
-    vida : 'vida',
+const classes = {
+    hide : 'esconder',
+    fired : 'disparado',
+    projectile : 'proyectil',
+    enemy : 'enemigo',
+    starts : 'estrellas',
+    ship : 'nave',
+    ally : 'aliado',
+    life : 'vida',
     countDownMenu : 'countDownMenu',
     loseMenu : 'loseMenu',
     points : 'points',
@@ -150,42 +153,44 @@ const clase = {
     totalPoints : 'totalPoints'
 }
 
-const poder = {
-    cadencia : 100,
-    velocidadDisparo : 1,
-    vida : 0.1,
-    dano : 10,
+const power = {
+    candence : 100,
+    shootSpeed : 1,
+    life : 0.1,
+    damage : 10,
     max : {
-        cadencia : 200,
-        velocidadDisparo : 100
+        cadence : 200,
+        shootSpeed : 100
     }
 }
 
+const initPower = Object.assign({}, power);
+
 //Las medidas de tamano se miden en píxeles, excepto tamano.movil, esas se miden en porcentajes.
-const tamano = {
-    nave : {
-        ancho : 60,
-        alto : 80
+const size = {
+    ship : {
+        width : 60,
+        height : 80
     },
-    proyectil : {
-        ancho : 5,
-        alto : 10
+    projectile : {
+        width : 5,
+        height : 10
     },
-    enemigo : {
-        ancho : 70,
-        alto : 70
+    enemy : {
+        width : 70,
+        height : 70
     },
-    aliado : {
-        ancho : 50,
-        alto : 50
+    ally : {
+        width : 50,
+        height : 50
     },
-    ventana : {
-        ancho : 0,
-        alto : 0
+    frame : {
+        width : 0,
+        height : 0
     },
     countDownMenu : { 
-        ancho : 300,
-        alto : 400
+        width : 300,
+        height : 400
     },
     loseMenu : {
       width : 500,

@@ -10,14 +10,15 @@ let speedShootEvent = null;
 let speedEnemyEvent = null;
 let speedAllyEvent = null;
 let eventChangeSpeedStarts = null;
+let increaseLifeEnemies = null;
 
 const item = {
     zeroFill : (num, max) => num.toString().length < max ? item.zeroFill('0' + num, max) : num
     ,
-    checkLimit : (yPos) => (yPos) >= tamano.ventana.alto
+    checkLimit : (yPos) => (yPos) >= size.frame.height
     ,
     rePrepareToSpawn : (element, heightElement) => {
-        element.classList.add(clase.esconder);
+        element.classList.add(classes.hide);
         element.style.top = negativeValue(heightElement) + px;    
     },
     collisionWithShip : (yColisionador, xColisionador, nave, anchoColisionador, altoColisionador) => {
@@ -25,17 +26,17 @@ const item = {
         const xPosNave = parseFloat(nave.style.left.split(px)[0]);
     
         const percentage = {
-            x : tamano.nave.ancho * tamano.colisionador.nave.ancho,
+            x : size.ship.width * size.colisionador.nave.ancho,
             y : {
-                top : tamano.nave.alto * tamano.colisionador.nave.alto.top,
-                bottom : tamano.nave.alto * tamano.colisionador.nave.alto.bottom
+                top : size.ship.height * size.colisionador.nave.alto.top,
+                bottom : size.ship.height * size.colisionador.nave.alto.bottom
             }
         }
     
         const boundsNave = {
             x : {
                 min : xPosNave + percentage.x,
-                max : (xPosNave + tamano.nave.ancho) - percentage.x,
+                max : (xPosNave + size.ship.width) - percentage.x,
             },
             y : {
                 min : yPosNave + percentage.y.bottom,
@@ -80,10 +81,10 @@ const item = {
         element.style.top = negativeValue(width) + px;
         element.style.left = 0 + px;
         element.style.position = 'absolute';
-        element.classList.add(clase.esconder, type);
+        element.classList.add(classes.hide, type);
 
         switch (type) {
-            case clase.enemigo:
+            case classes.enemy:
                 element.style.height += parseInt(element.style.height.split(px)[0]) * 0.05 + px;
 
                 const bodyElement = document.createElement(label);
@@ -113,7 +114,7 @@ const item = {
                 element.appendChild(bodyElement);
                 element.appendChild(lifeContainer);
                 break;
-            case clase.aliado:
+            case classes.ally:
                 element.style.backgroundSize = oneHundred + percentage + ' ' + oneHundred + percentage;
                 element.style.backgroundPosition = 'center';
                 element.style.backgroundRepeat = 'no-repeat';
@@ -186,15 +187,15 @@ const item = {
             element.style.backgroundImage = chosedImage;
             //Reasigno su nuevo poder según su nueva imagen.
             chosedAllyType = item.ally.chooseAllyType(chosedImage);
-            element.classList.add(chosedAllyType, clase.aliado);
+            element.classList.add(chosedAllyType, classes.ally);
             //Y finalmente le agrego la imagen correspondiente a su actual power up.
             element.setAttribute(attribute.dataPowerUp, item.ally.chooseImagePower(chosedAllyType));
         },
         rebootCadence : (ship, projectiles) => {
-            if (time.betweenShots - poder.cadencia > poder.max.cadencia) {
-                time.betweenShots -= poder.cadencia;
+            if (time.betweenShots - power.candence > power.max.cadence) {
+                time.betweenShots -= power.candence;
             } else {
-                time.betweenShots = poder.max.cadencia;
+                time.betweenShots = power.max.cadence;
             }
             rateOfFireEvent = clearInterval(rateOfFireEvent);
             rateOfFireEvent = setInterval(_ => item.ship.shoot(ship, projectiles), time.betweenShots)
@@ -202,7 +203,7 @@ const item = {
         heal : (life) => {
             let currentLife = parseInt(life.style.width.split(percentage)[0]);
             //Si la vida actual es menor al 100%, se le curará.
-            currentLife += currentLife < oneHundred ? oneHundred * poder.vida : 0;
+            currentLife += currentLife < oneHundred ? oneHundred * power.life : 0;
             //Si con la suma anterior se pasa del 100%, me aseguro que sea siempre 100%.
             currentLife = currentLife > oneHundred ? oneHundred : currentLife;
             life.style.width = currentLife + percentage;
@@ -213,10 +214,10 @@ const item = {
             } else if (ally.classList.contains(nombre.aliado.mascarilla)) {
                 item.ally.heal(life);
             } else if (ally.classList.contains(nombre.aliado.poqvnw)) {
-                damage.projectile += poder.dano;
+                damage.projectile += power.damage;
                 damage.projectile = Math.round(damage.projectile * 10) / 10;
             } else if (ally.classList.contains(nombre.aliado.koala)) {
-                speed.projectile += poder.velocidadDisparo;
+                speed.projectile += power.shootSpeed;
             }
         },
         move : (allys, ship, projectiles, life) => {
@@ -226,7 +227,7 @@ const item = {
             let caught = false;
             let curImg;
             allys.forEach(ally => {
-                if (!ally.classList.contains(clase.esconder)) {
+                if (!ally.classList.contains(classes.hide)) {
                     caught = ally.getAttribute(attribute.dataCaught);
                     
                     //Si el aliado aún no ha sido pillado por el jugador...
@@ -236,11 +237,11 @@ const item = {
                         xPos = parseFloat(ally.style.left.split(px)[0]);
                         ally.style.top = yPos + speed.friends + px;
 
-                        if (item.collisionWithShip(yPos, xPos, ship, tamano.aliado.ancho, tamano.aliado.alto)) {
+                        if (item.collisionWithShip(yPos, xPos, ship, size.ally.width, size.ally.height)) {
                             ally.setAttribute(attribute.dataCaught, true);
                             item.ally.increaseStats(ally, ship, projectiles, life);
 
-                            const pointsMenu = document.querySelector('.' + clase.points);
+                            const pointsMenu = document.querySelector('.' + classes.points);
                             currentPoints = parseInt(pointsMenu.textContent.trim());
                             pointsMenu.innerHTML = item.zeroFill(currentPoints + item.ally.points, 10);
 
@@ -250,7 +251,7 @@ const item = {
                             ally.style.backgroundImage = ally.getAttribute(attribute.dataPowerUp);
 
                             setTimeout(() => {
-                                item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                                item.rePrepareToSpawn(ally, size.ally.height);
                                 ally.style.backgroundImage = curImg.bg;
                                 item.ally.assignRole(ally, imagenes.aliados);
         
@@ -259,7 +260,7 @@ const item = {
 
                         } else if (item.checkLimit(yPos)) {
                             item.ally.assignRole(ally, imagenes.aliados);
-                            item.rePrepareToSpawn(ally, tamano.aliado.alto);
+                            item.rePrepareToSpawn(ally, size.ally.height);
                         }
                     }
                 }
@@ -278,7 +279,7 @@ const item = {
         
             colliders.forEach(collider => {
                 //Si el elemento no está escondido, es decir, que está recorriendo la pantalla.
-                if (!collider.classList.contains(clase.esconder)) {
+                if (!collider.classList.contains(classes.hide)) {
                     yCollider = parseInt(collider.style.top.split(px)[0]);
                     xCollider = parseInt(collider.style.left.split(px)[0]);
             
@@ -296,8 +297,8 @@ const item = {
                     if(yElement <= bounds.y.min && yElement >= bounds.y.max) {
                         if (xElement >= bounds.x.min && xElement <= bounds.x.max) {
 
-                            element.classList.add(clase.esconder);
-                            element.classList.toggle(clase.disparado);
+                            element.classList.add(classes.hide);
+                            element.classList.toggle(classes.fired);
 
                             //Obtengo el elemento div que contiene la vida del enemigo.
                             lifeBar = collider.lastChild.lastChild;
@@ -316,21 +317,21 @@ const item = {
         
             //Si el proyectil se sale de la parte superior de la pantalla + la de su propia altura * 1.4, desaparecerá.
             if (yPos <= negativeValue(height * 1.4)) { 
-                projectile.classList.remove(clase.disparado);
-                projectile.classList.add(clase.esconder);
+                projectile.classList.remove(classes.fired);
+                projectile.classList.add(classes.hide);
             }
         },
         move : (projectiles, enemies) => {
             let actualProjectilePos = 0;
         
             projectiles.forEach(projectile => {
-                if (!projectile.classList.contains(clase.esconder)) {
-                    if (projectile.classList.contains(clase.disparado)) {
+                if (!projectile.classList.contains(classes.hide)) {
+                    if (projectile.classList.contains(classes.fired)) {
                         actualProjectilePos = parseInt(projectile.style.top.split(px)[0]) - speed.projectile;
                         projectile.style.top = actualProjectilePos + px;
         
                         item.projectile.checkLimit(projectile);
-                        item.projectile.checkCollisions(projectile, enemies, tamano.proyectil.alto, tamano.proyectil.ancho, tamano.enemigo.alto, tamano.enemigo.ancho);
+                        item.projectile.checkCollisions(projectile, enemies, size.projectile.height, size.projectile.width, size.enemy.height, size.enemy.width);
                     }
                 }
             });
@@ -340,11 +341,11 @@ const item = {
         maxLife : 100,
         points : 75,
         die : (enemy) => {
-            const pointsMenu = document.querySelector('.' + clase.points);
+            const pointsMenu = document.querySelector('.' + classes.points);
             const currentPoints = parseInt(pointsMenu.textContent.trim());
             pointsMenu.innerHTML = item.zeroFill(currentPoints + item.enemy.points, 10);
 
-            item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
+            item.rePrepareToSpawn(enemy, size.enemy.height);
         },
         takeDamage : (enemy, lifeBar, currentLife, currentMaxLife) => {      
             currentLife -= damage.projectile;
@@ -358,14 +359,14 @@ const item = {
             let xPos = 0;
         
             enemies.forEach(enemy => {
-                if (!enemy.classList.contains(clase.esconder)) {
+                if (!enemy.classList.contains(classes.hide)) {
                     yPos = parseInt(enemy.style.top.split(px)[0]);
                     xPos = parseInt(enemy.style.left.split(px)[0]);
         
                     enemy.style.top = yPos + speed.enemies + px;
 
-                    if (item.collisionWithShip(yPos, xPos, ship, tamano.enemigo.ancho, tamano.enemigo.alto) || item.checkLimit(yPos)) {
-                        item.rePrepareToSpawn(enemy, tamano.enemigo.alto);
+                    if (item.collisionWithShip(yPos, xPos, ship, size.enemy.width, size.enemy.height) || item.checkLimit(yPos)) {
+                        item.rePrepareToSpawn(enemy, size.enemy.height);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
                         life.style.width = currentLife + percentage;
@@ -394,10 +395,10 @@ const item = {
         
             starts.forEach((estrella, i) => {
                 top = parseInt(estrella.style.top.split(px)[0]);
-                if (top >= tamano.ventana.alto) {
+                if (top >= size.frame.height) {
 
                     alto = parseInt(estrella.style.height.split(px)[0]);
-                    estrella.classList.add(clase.esconder);
+                    estrella.classList.add(classes.hide);
                     if (i == 0) {
                         top = parseInt(starts[i + 2].style.top.split(px)[0]);
                         estrella.style.top = top - alto + px;
@@ -409,7 +410,7 @@ const item = {
                         estrella.style.top = top - alto * 2 - speed.starts + px;
                     }
                 } else {
-                    estrella.classList.remove(clase.esconder);
+                    estrella.classList.remove(classes.hide);
                 }
                 actualY = parseInt(estrella.style.top.split(px)[0]);
                 estrella.style.top = actualY + speed.starts + px;
@@ -429,13 +430,13 @@ const item = {
     ship : {
         isDeath : false,
         toDie : (life) => {
-            const loseMenu = document.querySelector('.' + clase.loseMenu);
-            const totalPoints = document.querySelector('.' + clase.totalPoints);
-            const currentPoints = document.querySelector('.' + clase.points);
+            const loseMenu = document.querySelector('.' + classes.loseMenu);
+            const totalPoints = document.querySelector('.' + classes.totalPoints);
+            const currentPoints = document.querySelector('.' + classes.points);
              
             //life.style.width = oneHundred + percentage;
             item.ship.isDeath = true;
-            loseMenu.classList.toggle(clase.esconder);
+            loseMenu.classList.toggle(classes.hide);
             loseMenu.style.display = 'flex';
 
             totalPoints.textContent = parseInt(currentPoints.textContent) + ' puntos';
@@ -448,20 +449,21 @@ const item = {
             spawnEnemyEvent = clearInterval(spawnEnemyEvent);
             eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
             speedStartsEvent  = clearInterval(speedStartsEvent);
+            increaseLifeEnemies = clearInterval(increaseLifeEnemies);
         },
         shoot : (ship, projectiles) => {
             let xPosShip = 0;
             let yPosShip = 0;
         
-            if (!projectiles[orden.proyectil].classList.contains(clase.disparado)) {
-                projectiles[orden.proyectil].classList.remove(clase.esconder);
+            if (!projectiles[orden.proyectil].classList.contains(classes.fired)) {
+                projectiles[orden.proyectil].classList.remove(classes.hide);
                 yPosShip = parseInt(ship.style.top.split(px)[0]);
 
-                projectiles[orden.proyectil].style.top = yPosShip + tamano.proyectil.alto + px;
+                projectiles[orden.proyectil].style.top = yPosShip + size.projectile.height + px;
                 xPosShip = parseInt(ship.style.left.split(px)[0]);
 
-                projectiles[orden.proyectil].style.left = xPosShip + halfValue(tamano.nave.ancho) - halfValue(tamano.proyectil.ancho) + px;
-                projectiles[orden.proyectil].classList.add(clase.disparado);
+                projectiles[orden.proyectil].style.left = xPosShip + halfValue(size.ship.width) - halfValue(size.projectile.width) + px;
+                projectiles[orden.proyectil].classList.add(classes.fired);
             }
             orden.proyectil = orden.proyectil < projectiles.length - 1 ? orden.proyectil + 1 : 0;
         },
@@ -471,7 +473,7 @@ const item = {
                     x : event.changedTouches[0].screenX,
                     y : event.changedTouches[0].screenY
                 }
-            
+                /*
                 const limit = {
                     x : {
                         min : halfValue(tamano.nave.ancho),
@@ -482,7 +484,8 @@ const item = {
                         max : tamano.ventana.alto * (90 / oneHundred)
                     }
                 }
-                ship.style.left = touchPos.x - halfValue(tamano.nave.ancho) + px;
+                */
+                ship.style.left = touchPos.x - halfValue(size.ship.width) + px;
             }
         },
         computer : {
@@ -494,21 +497,21 @@ const item = {
             
                 const limitesVentana = {
                     x : {
-                        min : tamano.nave.ancho * 0.1,
-                        max : tamano.ventana.ancho - tamano.nave.ancho * 0.1
+                        min : size.ship.width * 0.1,
+                        max : size.frame.width - size.ship.width * 0.1
                     },
                     y : {
-                        min : tamano.nave.alto,
-                        max : tamano.ventana.alto
+                        min : size.ship.height,
+                        max : size.frame.height
                     }
                 }
             
                 if (coordRaton.x > limitesVentana.x.min && coordRaton.x < limitesVentana.x.max) {
-                    nave.style.left = coordRaton.x - halfValue(tamano.nave.ancho) + px;
+                    nave.style.left = coordRaton.x - halfValue(size.ship.width) + px;
                 }
             
                 if (coordRaton.y > limitesVentana.y.min && coordRaton.y < limitesVentana.y.max) {
-                    nave.style.top = coordRaton.y - tamano.nave.alto + px;
+                    nave.style.top = coordRaton.y - size.ship.height + px;
                 }
             }
         }
@@ -519,23 +522,23 @@ const item = {
         if (num <= probability) {
             const limit = {
                 x : {
-                    min : tamano.enemigo.ancho  + halfValue(tamano.enemigo.ancho),
-                    max : window.innerWidth - halfValue(tamano.enemigo.ancho)
+                    min : size.enemy.width  + halfValue(size.enemy.width),
+                    max : window.innerWidth - halfValue(size.enemy.width)
                 }
             }   
             let spawned = false;
             elements.forEach(element => {
                 if (!spawned) {
-                    const hidden = element.classList.contains(clase.esconder);
+                    const hidden = element.classList.contains(classes.hide);
                     if (hidden) {
-                        if (element.classList.contains(clase.enemigo)) {
+                        if (element.classList.contains(classes.enemy)) {
                             const lifeBar = element.lastChild.lastChild;
                             lifeBar.setAttribute(attribute.dataMaxLife, item.enemy.maxLife);
                             lifeBar.setAttribute(attribute.dataLife, item.enemy.maxLife);
                             lifeBar.style.width = oneHundred + percentage;
                         }
                         const xAleatoria = Math.floor(Math.random() * (limit.x.max - limit.x.min));
-                        element.classList.remove(clase.esconder);
+                        element.classList.remove(classes.hide);
                         element.style.left = xAleatoria + px;
                         spawned = true;
                     }
