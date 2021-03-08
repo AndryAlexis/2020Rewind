@@ -126,11 +126,11 @@ window.addEventListener(usedEvent.load, _ => {
 
         //Reinicio la puntuación.
         const currentPoints = document.querySelector('.' + classes.points);
-        currentPoints.textContent = '0000000000';
+        currentPoints.textContent = '0000000000';         
 
         //Relleno la vida al máximo.
-        
-        vida.childNodes[1].style.width = oneHundred + '%';
+        const vida = document.querySelector('.' + classes.life).childNodes[1];
+        vida.style.width = oneHundred + '%';
 
         //Restauro todo los setTimeout().
         const proyectiles = document.querySelectorAll('.' + classes.projectile);

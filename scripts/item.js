@@ -369,6 +369,7 @@ const item = {
                         item.rePrepareToSpawn(enemy, size.enemy.height);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
+                        console.log(currentLife);
                         life.style.width = currentLife + percentage;
         
                         if (currentLife <= 0) item.ship.toDie(life);
