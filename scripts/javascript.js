@@ -22,7 +22,7 @@ const iniciarParametros = (nave, estrellas, anchoNave, altoNave, vida) => {
     });
 }
 
-const main = (nave, vida) => {
+const main = (nave, vida, estrellas) => {
     //Así me aseguro que recorre siempre la misma distancia independientemente del tamaño de la pantalla.
     speed.projectile = size.frame.height * 0.01;
 
@@ -53,8 +53,12 @@ const main = (nave, vida) => {
     speedAllyEvent = setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
     spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
     spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
+    speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
     speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
+
     increaseLifeEnemies = setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
+    eventChangeSpeedStarts = setInterval(_ => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+    eventChangeSpeedEnemies = setInterval(_ => item.enemy.changeSpeed(enemigos, nave, vida), time.changeSpeedEnemies);
 }
 
 window.addEventListener(usedEvent.load, _ => {
@@ -86,9 +90,8 @@ window.addEventListener(usedEvent.load, _ => {
 
     }, time.countdown);
 
-    setTimeout(() => main(nave, vida.childNodes[1]), time.countdown);
-    speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
-    eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+    //MAIN
+    setTimeout(() => main(nave, vida.childNodes[1], estrellas), time.countdown);
 
     document.querySelector('button').addEventListener('click', () => {
         //Quito el menú de perder.
@@ -147,6 +150,7 @@ window.addEventListener(usedEvent.load, _ => {
         increaseLifeEnemies = setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
         speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
         eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+        eventChangeSpeedEnemies = setInterval(() => item.enemy.changeSpeed());
 
         //Digo que la nave sigue viva.
         item.ship.isDeath = false;

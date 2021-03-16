@@ -10,6 +10,7 @@ let speedShootEvent = null;
 let speedEnemyEvent = null;
 let speedAllyEvent = null;
 let eventChangeSpeedStarts = null;
+let eventChangeSpeedEnemies = null;
 let increaseLifeEnemies = null;
 
 const item = {
@@ -369,7 +370,6 @@ const item = {
                         item.rePrepareToSpawn(enemy, size.enemy.height);
         
                         const currentLife = life.style.width.split(percentage)[0] - (oneHundred * damage.enemy);
-                        console.log(currentLife);
                         life.style.width = currentLife + percentage;
         
                         if (currentLife <= 0) item.ship.toDie(life);
@@ -385,6 +385,12 @@ const item = {
         },
         increaseLife : () => {
             item.enemy.maxLife += 50;
+        },
+        changeSpeed : (enemies, ship, life) => {
+            speed.enemies += speed.next.enemies;
+
+            speedEnemyEvent = clearInterval(speedEnemyEvent);
+            speedEnemyEvent = setInterval(_ => item.enemy.move(enemies, ship, life), time.movement.enemies);
         },
     },
     starts : {

@@ -36,7 +36,8 @@ let speed = {
         starts : 40
     },
     next : {
-        starts : 1
+        starts : 1,
+        enemies : 0.2
     }
 }
 
@@ -70,6 +71,7 @@ const time = {
     countdown : 2350,
     startGame : 2500,
     changeSpeedStarts : 15000,
+    changeSpeedEnemies : 15000,
     showingPowerUp : 1500,
     changeEnemyLife : 60000
 }
