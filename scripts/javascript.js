@@ -149,8 +149,9 @@ window.addEventListener(usedEvent.load, _ => {
         speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
         increaseLifeEnemies = setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
         speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
+
         eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
-        eventChangeSpeedEnemies = setInterval(() => item.enemy.changeSpeed());
+        eventChangeSpeedEnemies = setInterval(() => item.enemy.changeSpeed(enemigos, nave, vida));
 
         //Digo que la nave sigue viva.
         item.ship.isDeath = false;
