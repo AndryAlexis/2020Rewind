@@ -358,6 +358,8 @@ const item = {
         move : (enemies, ship, life) => {
             let yPos = 0;
             let xPos = 0;
+
+            console.log("Speed: " + speed.enemies);
         
             enemies.forEach(enemy => {
                 if (!enemy.classList.contains(classes.hide)) {
@@ -387,10 +389,11 @@ const item = {
             item.enemy.maxLife += 50;
         },
         changeSpeed : (enemies, ship, life) => {
-            speed.enemies += speed.next.enemies;
 
             speedEnemyEvent = clearInterval(speedEnemyEvent);
+            speed.enemies += speed.next.enemies;
             speedEnemyEvent = setInterval(_ => item.enemy.move(enemies, ship, life), time.movement.enemies);
+
         },
     },
     starts : {

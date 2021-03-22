@@ -142,16 +142,17 @@ window.addEventListener(usedEvent.load, _ => {
 
         rateOfFireEvent = setInterval(_ => item.ship.shoot(nave, proyectiles), time.betweenShots);
         speedShootEvent = setInterval(_ => item.projectile.move(proyectiles, enemigos), time.movement.projectile);
-        
+
         speedAllyEvent = setInterval(_ => item.ally.move(aliados, nave, proyectiles, vida), time.movement.friends);
         spawnEnemyEvent = setInterval(_ => item.spawn(enemigos, probability.enemies), time.spawn.enemies);
         spawnAllyEvent = setInterval(_ => item.spawn(aliados, probability.friends), time.spawn.friends);
         speedEnemyEvent = setInterval(_ => item.enemy.move(enemigos, nave, vida), time.movement.enemies);
+
         increaseLifeEnemies = setInterval(_ => item.enemy.increaseLife(), time.changeEnemyLife);
         speedStartsEvent = setInterval(_ => item.starts.move(estrellas), time.movement.starts);
 
-        eventChangeSpeedStarts = setInterval(() => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
-        eventChangeSpeedEnemies = setInterval(() => item.enemy.changeSpeed(enemigos, nave, vida));
+        eventChangeSpeedStarts = setInterval(_ => item.starts.changeSpeed(estrellas, eventChangeSpeedStarts), time.changeSpeedStarts);
+        eventChangeSpeedEnemies = setInterval(_ => item.enemy.changeSpeed(enemigos, nave, vida), time.changeSpeedEnemies);
 
         //Digo que la nave sigue viva.
         item.ship.isDeath = false;
