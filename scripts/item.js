@@ -458,7 +458,7 @@ const item = {
             spawnAllyEvent = clearInterval(spawnAllyEvent);
             spawnEnemyEvent = clearInterval(spawnEnemyEvent);
             eventChangeSpeedStarts = clearInterval(eventChangeSpeedStarts);
-            eventChangeSpeedEnemies = clearInterval(eventChangeSpeedStarts);
+            eventChangeSpeedEnemies = clearInterval(eventChangeSpeedEnemies);
             speedStartsEvent  = clearInterval(speedStartsEvent);
             increaseLifeEnemies = clearInterval(increaseLifeEnemies);
         },

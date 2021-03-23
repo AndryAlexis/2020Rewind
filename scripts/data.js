@@ -156,13 +156,13 @@ const classes = {
 }
 
 const power = {
-    candence : 100,
-    shootSpeed : 1,
+    candence : 150,
+    shootSpeed : 10,
     life : 0.1,
-    damage : 10,
+    damage : 15,
     max : {
-        cadence : 200,
-        shootSpeed : 100
+        cadence : 300,
+        shootSpeed : 120
     }
 }
 

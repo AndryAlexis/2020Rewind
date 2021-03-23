@@ -183,6 +183,8 @@ body {
     align-items: center;
     width: 100%;
     height: 40%;
+
+    border: 1px solid blueviolet;
 }
 
 .loseMenu > div > div:first-of-type > div {
@@ -195,6 +197,15 @@ body {
 }
 
 .loseMenu > div > div:first-of-type p {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#record {
+    display: flex;
+    justify-content: center;
+    border: yellowgreen;
     color: white;
     font-weight: bold;
     font-size: 1.5em;
