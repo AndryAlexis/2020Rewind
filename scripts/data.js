@@ -47,7 +47,7 @@ const initSpeed = Object.assign({}, speed);
 //Máximo 1.0
 const damage = {
     projectile : 50, 
-    enemy : 1
+    enemy : 0.15
 }
 
 const label = {
